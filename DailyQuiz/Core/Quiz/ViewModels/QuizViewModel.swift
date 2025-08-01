@@ -29,11 +29,13 @@ final class QuizViewModel: ObservableObject {
     
     // MARK: - Init
     
-    init() {
+    init() {}
+    
+    // MARK: - Private Methods
+    
+    func loadQuizQuestions() {
         addSubscribers()
     }
-    
-    // MARK: - Subscribers
     
     private func addSubscribers() {
         quizDataService.$quizQuestions
