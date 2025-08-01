@@ -17,6 +17,9 @@ struct HomeView: View {
     @State
     private var showQuiz: Bool = false
     
+    @State
+    private var showErrorMessage: Bool = false
+    
     // MARK: - Body
     
     var body: some View {
@@ -25,22 +28,23 @@ struct HomeView: View {
             Color.appThemeColors.moodyBlue.edgesIgnoringSafeArea(.all)
             
             // foreground
-            if !showQuiz {
+            if showQuiz && !viewModel.quizQuestions.isEmpty {
+                QuizView()
+                    .environmentObject(viewModel)
+            } else {
                 VStack {
                     historyButton
-                        .padding(.top, 80)
-                        .padding(.bottom, 100)
+                        .padding(.top, 46)
+                        .padding(.bottom, 114)
                     logo
-                        .padding(.bottom, 30)
+                        .padding(.bottom, 40)
                     startQuizSection
                         .padding(.horizontal)
+                    if  showErrorMessage {
+                        errorMessage
+                            .padding(.top, 15)
+                    }
                     Spacer()
-                }
-            } else {
-                if !viewModel.quizQuestions.isEmpty {
-                    QuizView()
-                        .environmentObject(viewModel)
-                        .transition(.move(edge: .trailing))
                 }
             }
         }
@@ -72,7 +76,7 @@ private extension HomeView {
     }
     
     private var startQuizSection: some View {
-        VStack(spacing: 45) {
+        VStack(spacing: 40) {
             Text("Добро пожаловать в DailyQuiz!")
                 .foregroundStyle(Color.appThemeColors.accent)
                 .font(.title)
@@ -80,6 +84,8 @@ private extension HomeView {
                 .multilineTextAlignment(.center)
             Button {
                 showQuiz.toggle()
+                viewModel.loadQuizQuestions()
+                showErrorMessage = viewModel.quizQuestions.isEmpty ? true : false
             } label: {
                 RoundedRectangleButton(
                     text: "НАЧАТЬ ВИКТОРИНУ",
@@ -88,12 +94,18 @@ private extension HomeView {
                 )
             }
         }
-        .padding(.vertical, 30)
-        .padding(.horizontal, 45)
+        .padding(32)
         .background(
-            RoundedRectangle(cornerRadius: 45)
+            RoundedRectangle(cornerRadius: 46)
                 .foregroundStyle(Color.appThemeColors.white)
         )
+    }
+    
+    private var errorMessage: some View {
+        Text("Ошибка! Попробуйте ещё раз")
+            .foregroundStyle(Color.appThemeColors.white)
+            .font(.title3)
+            .fontWeight(.heavy)
     }
     
 }
