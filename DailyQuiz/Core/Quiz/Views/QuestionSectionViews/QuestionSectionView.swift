@@ -48,7 +48,8 @@ struct QuestionSectionView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(35)
+        .padding(.vertical, 32)
+        .padding(.horizontal, 30)
         .background(
             RoundedRectangle(cornerRadius: 45)
                 .foregroundStyle(Color.appThemeColors.white)

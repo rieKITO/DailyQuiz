@@ -17,8 +17,9 @@ struct QuizView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(spacing: 30) {
+        VStack {
             header
+                .padding(.bottom, 30)
             QuestionSectionView(
                 question: viewModel.quizQuestions[viewModel.currentQuestionIndex],
                 questionIndex: viewModel.currentQuestionIndex,
@@ -27,6 +28,8 @@ struct QuizView: View {
                 goNext: viewModel.goToNextQuestion,
                 selectedAnswer: $viewModel.selectedAnswer
             )
+            footerText
+                .padding(.top, 8)
             Spacer()
         }
         .padding(20)
@@ -42,6 +45,12 @@ private extension QuizView {
         Image("logo")
             .resizable()
             .frame(width: 180, height: 40)
+    }
+    
+    private var footerText: some View {
+        Text("Вернуться к предыдущим вопросам нельзя")
+            .foregroundStyle(Color.appThemeColors.white)
+            .font(.caption2)
     }
     
 }
