@@ -21,6 +21,9 @@ final class QuizViewModel: ObservableObject {
     @Published
     var selectedAnswer: String? = nil
     
+    @Published
+    var isLoading: Bool = false
+    
     // MARK: - Services
     
     private let quizDataService = QuizDataService()
@@ -34,6 +37,7 @@ final class QuizViewModel: ObservableObject {
     // MARK: - Private Methods
     
     func loadQuizQuestions() {
+        isLoading = true
         addSubscribers()
     }
     
@@ -41,6 +45,9 @@ final class QuizViewModel: ObservableObject {
         quizDataService.$quizQuestions
             .sink { [weak self] returnedQuizQuestions in
                 self?.quizQuestions = returnedQuizQuestions
+                DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
+                    self?.isLoading = false
+                }
             }
             .store(in: &cancellables)
     }
