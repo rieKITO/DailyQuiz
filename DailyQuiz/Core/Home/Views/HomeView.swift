@@ -9,10 +9,12 @@ import SwiftUI
 
 struct HomeView: View {
     
-    // MARK: - State
+    // MARK: - View Model
     
     @StateObject
     private var viewModel = QuizViewModel()
+    
+    // MARK: - State
     
     @State
     private var showQuiz: Bool = false
