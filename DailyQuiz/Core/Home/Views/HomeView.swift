@@ -30,7 +30,15 @@ struct HomeView: View {
             Color.appThemeColors.moodyBlue.edgesIgnoringSafeArea(.all)
             
             // foreground
-            if showQuiz && !viewModel.quizQuestions.isEmpty {
+            if viewModel.isLoading {
+                VStack {
+                    logo
+                        .padding(.top, 224)
+                        .padding(.bottom, 130)
+                    loader
+                    Spacer()
+                }
+            } else if showQuiz && !viewModel.quizQuestions.isEmpty {
                 QuizView()
                     .environmentObject(viewModel)
             } else {
@@ -108,6 +116,12 @@ private extension HomeView {
             .foregroundStyle(Color.appThemeColors.white)
             .font(.title3)
             .fontWeight(.heavy)
+    }
+    
+    private var loader: some View {
+        Image("loader")
+            .resizable()
+            .frame(width: 54, height: 54)
     }
     
 }
