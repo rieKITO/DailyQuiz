@@ -17,18 +17,39 @@ struct QuizView: View {
     // MARK: - Body
     
     var body: some View {
-        ScrollView {
-            Text("Hello")
-            ForEach(viewModel.quizQuestions) { question in
-                Text(question.question)
-            }
+        VStack(spacing: 30) {
+            header
+            QuestionSectionView(
+                question: viewModel.quizQuestions[viewModel.currentQuestionIndex],
+                questionIndex: viewModel.currentQuestionIndex,
+                countOfQuestions: viewModel.quizQuestions.count,
+                selectedAnswer: $viewModel.selectedAnswer
+            )
+            Spacer()
         }
+        .padding(20)
+        .padding(.top, 10)
     }
+}
+
+// MARK: - Layout
+
+private extension QuizView {
+    
+    private var header: some View {
+        Image("logo")
+            .resizable()
+            .frame(width: 180, height: 40)
+    }
+    
 }
 
 // MARK: - Preview
 
 #Preview {
-    QuizView()
-        .environmentObject(DeveloperPreview.shared.quizViewModel)
+    ZStack {
+        Color.appThemeColors.moodyBlue.ignoresSafeArea()
+        QuizView()
+            .environmentObject(DeveloperPreview.shared.quizViewModel)
+    }
 }

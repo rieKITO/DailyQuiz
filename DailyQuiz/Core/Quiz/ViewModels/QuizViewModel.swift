@@ -15,6 +15,12 @@ final class QuizViewModel: ObservableObject {
     @Published
     var quizQuestions: [QuizQuestion] = []
     
+    @Published
+    var currentQuestionIndex: Int = 0
+    
+    @Published
+    var selectedAnswer: String? = nil
+    
     // MARK: - Services
     
     private let quizDataService = QuizDataService()

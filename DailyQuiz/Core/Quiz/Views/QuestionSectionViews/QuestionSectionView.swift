@@ -9,15 +9,112 @@ import SwiftUI
 
 struct QuestionSectionView: View {
     
+    // MARK: - Init Properties
+    
+    let question: QuizQuestion
+    
+    let questionIndex: Int
+    
+    let countOfQuestions: Int
+    
+    // MARK: - Binding
+    
+    @Binding
+    var selectedAnswer: String?
+    
+    // MARK: - State
+    
+    @State
+    private var shuffledAnswers: [String] = []
+    
     // MARK: - Body
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            questionNumber
+                .padding(.bottom, 20)
+            questionText
+                .padding(.bottom, 15)
+            answers
+        }
+        .frame(maxWidth: .infinity)
+        .padding(35)
+        .background(
+            RoundedRectangle(cornerRadius: 45)
+                .foregroundStyle(Color.appThemeColors.white)
+        )
+        .onAppear {
+            if shuffledAnswers.isEmpty {
+                shuffledAnswers = getShuffledAnswers(
+                    answers: question.incorrectAnswers + [question.correctAnswer]
+                )
+            }
+        }
     }
+}
+
+// MARK: - Layout
+
+private extension QuestionSectionView {
+    
+    private var questionNumber: some View {
+        Text("Вопрос \(questionIndex + 1) из \(countOfQuestions)")
+            .foregroundStyle(Color.appThemeColors.paleBlue)
+            .font(.headline)
+            .bold()
+    }
+    
+    private var questionText: some View {
+        Text(question.question)
+            .font(.title3)
+            .fontWeight(.bold)
+            .multilineTextAlignment(.center)
+    }
+    
+    private var answers: some View {
+        ForEach(shuffledAnswers, id: \.self) { answer in
+            AnswerRowView(answer: answer, isSelected: selectedAnswer == answer)
+                .padding(.vertical, 5)
+                .onTapGesture {
+                    selectedAnswer = answer
+                }
+        }
+    }
+    
+}
+
+// MARK: - Private Methods
+
+private extension QuestionSectionView {
+    
+    private func getShuffledAnswers(answers: [String]) -> [String] {
+        return answers.shuffled()
+    }
+    
 }
 
 // MARK: - Preview
 
 #Preview {
-    QuestionSectionView()
+    struct Preview: View {
+        
+        @State
+        private var selectedAnswer: String? = nil
+        
+        var body: some View {
+            ZStack {
+                //background
+                Color.appThemeColors.moodyBlue.ignoresSafeArea()
+                // foreground
+                QuestionSectionView(
+                    question: DeveloperPreview.shared.question,
+                    questionIndex: 1,
+                    countOfQuestions: 5,
+                    selectedAnswer: $selectedAnswer
+                )
+                .padding()
+            }
+        }
+    }
+    return Preview()
 }
