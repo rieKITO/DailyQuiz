@@ -17,7 +17,7 @@ struct QuizResponse: Codable {
     }
 }
 
-struct QuizQuestion: Codable, Identifiable {
+struct QuizQuestion: Codable, Identifiable, Hashable {
     var id: UUID = UUID()
     let type: String
     let difficulty: String
