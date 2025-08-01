@@ -24,6 +24,7 @@ struct RoundedRectangleButton: View {
             .foregroundStyle(textColor)
             .font(.headline)
             .fontWeight(.heavy)
+            .frame(maxWidth: .infinity)
             .padding()
             .padding(.horizontal, 30)
             .background(
@@ -41,4 +42,5 @@ struct RoundedRectangleButton: View {
         textColor: Color.appThemeColors.white,
         backgroundColor: Color.appThemeColors.moodyBlue
     )
+    .padding(.horizontal)
 }
