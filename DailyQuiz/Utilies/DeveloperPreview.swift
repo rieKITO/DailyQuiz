@@ -13,4 +13,17 @@ final class DeveloperPreview {
     
     let quizViewModel = QuizViewModel()
     
+    let question: QuizQuestion = QuizQuestion(
+        type: "multiple",
+        difficulty: "easy",
+        category: "General Knowledge",
+        question: "In the video-game franchise Kingdom Hearts, the main protagonist, carries a weapon with what shape?",
+        correctAnswer: "Key",
+        incorrectAnswers: [
+            "Sword",
+            "Pen",
+            "Cellphone"
+        ]
+    )
+    
 }
