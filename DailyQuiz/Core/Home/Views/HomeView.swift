@@ -19,19 +19,12 @@ struct HomeView: View {
             // foreground
             VStack {
                 historyButton
+                    .padding(.top, 80)
+                    .padding(.bottom, 100)
                 logo
-                VStack {
-                    Text("Добро пожаловать в DailyQuiz!")
-                        .foregroundStyle(Color.appThemeColors.accent)
-                        .font(.title)
-                        .bold()
-                        .multilineTextAlignment(.center)
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .foregroundStyle(Color.appThemeColors.white)
-                )
+                    .padding(.bottom, 30)
+                startQuizSection
+                Spacer()
             }
         }
     }
@@ -59,6 +52,27 @@ private extension HomeView {
         Image("logo")
             .resizable()
             .frame(width: 300, height: 68)
+    }
+    
+    private var startQuizSection: some View {
+        VStack(spacing: 45) {
+            Text("Добро пожаловать в DailyQuiz!")
+                .foregroundStyle(Color.appThemeColors.accent)
+                .font(.title)
+                .bold()
+                .multilineTextAlignment(.center)
+            RoundedRectangleButton(
+                text: "НАЧАТЬ ВИКТОРИНУ",
+                textColor: Color.appThemeColors.white,
+                backgroundColor: Color.appThemeColors.moodyBlue
+            )
+        }
+        .padding(.vertical, 30)
+        .padding(.horizontal, 45)
+        .background(
+            RoundedRectangle(cornerRadius: 45)
+                .foregroundStyle(Color.appThemeColors.white)
+        )
     }
     
 }
