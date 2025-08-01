@@ -13,6 +13,14 @@ final class DeveloperPreview {
     
     let quizViewModel = QuizViewModel()
     
+    private init() {
+        addQuestionInViewModel()
+    }
+    
+    func addQuestionInViewModel() {
+        quizViewModel.quizQuestions.append(question)
+    }
+    
     let question: QuizQuestion = QuizQuestion(
         type: "multiple",
         difficulty: "easy",
