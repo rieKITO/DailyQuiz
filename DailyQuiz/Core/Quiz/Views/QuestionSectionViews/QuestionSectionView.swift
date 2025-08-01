@@ -17,6 +17,12 @@ struct QuestionSectionView: View {
     
     let countOfQuestions: Int
     
+    // next button
+    
+    let showFooterButton: Bool
+    
+    let goNext: (() -> Void)?
+    
     // MARK: - Binding
     
     @Binding
@@ -36,6 +42,10 @@ struct QuestionSectionView: View {
             questionText
                 .padding(.bottom, 15)
             answers
+            if showFooterButton {
+                footerButton
+                    .padding(.top, 67)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(35)
@@ -81,6 +91,19 @@ private extension QuestionSectionView {
         }
     }
     
+    private var footerButton: some View {
+        Button {
+            goNext?()
+        } label: {
+            RoundedRectangleButton(
+                text: questionIndex < countOfQuestions - 1 ? "ДАЛЕЕ" : "ЗАВЕРШИТЬ",
+                textColor: selectedAnswer == nil ? Color.appThemeColors.lightGray : Color.appThemeColors.white,
+                backgroundColor: selectedAnswer == nil ? Color.appThemeColors.gray : Color.appThemeColors.moodyBlue
+            )
+        }
+        .disabled(selectedAnswer == nil)
+    }
+    
 }
 
 // MARK: - Private Methods
@@ -110,6 +133,8 @@ private extension QuestionSectionView {
                     question: DeveloperPreview.shared.question,
                     questionIndex: 1,
                     countOfQuestions: 5,
+                    showFooterButton: true,
+                    goNext: nil,
                     selectedAnswer: $selectedAnswer
                 )
                 .padding()

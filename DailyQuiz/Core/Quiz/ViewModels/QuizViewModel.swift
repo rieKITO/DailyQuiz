@@ -44,3 +44,18 @@ final class QuizViewModel: ObservableObject {
     }
     
 }
+
+// MARK: - Questions And Answers Methods
+
+extension QuizViewModel {
+    
+    func goToNextQuestion() {
+        selectedAnswer = nil
+        if currentQuestionIndex < quizQuestions.count - 1 {
+            currentQuestionIndex += 1
+        } else {
+            currentQuestionIndex = 0
+        }
+    }
+    
+}

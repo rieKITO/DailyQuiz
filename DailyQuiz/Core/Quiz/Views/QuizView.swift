@@ -23,6 +23,8 @@ struct QuizView: View {
                 question: viewModel.quizQuestions[viewModel.currentQuestionIndex],
                 questionIndex: viewModel.currentQuestionIndex,
                 countOfQuestions: viewModel.quizQuestions.count,
+                showFooterButton: true,
+                goNext: viewModel.goToNextQuestion,
                 selectedAnswer: $viewModel.selectedAnswer
             )
             Spacer()

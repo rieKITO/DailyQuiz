@@ -9,6 +9,14 @@ import SwiftUI
 
 struct HomeView: View {
     
+    // MARK: - State
+    
+    @StateObject
+    private var viewModel = QuizViewModel()
+    
+    @State
+    private var showQuiz: Bool = false
+    
     // MARK: - Body
     
     var body: some View {
@@ -17,14 +25,23 @@ struct HomeView: View {
             Color.appThemeColors.moodyBlue.edgesIgnoringSafeArea(.all)
             
             // foreground
-            VStack {
-                historyButton
-                    .padding(.top, 80)
-                    .padding(.bottom, 100)
-                logo
-                    .padding(.bottom, 30)
-                startQuizSection
-                Spacer()
+            if !showQuiz {
+                VStack {
+                    historyButton
+                        .padding(.top, 80)
+                        .padding(.bottom, 100)
+                    logo
+                        .padding(.bottom, 30)
+                    startQuizSection
+                        .padding(.horizontal)
+                    Spacer()
+                }
+            } else {
+                if !viewModel.quizQuestions.isEmpty {
+                    QuizView()
+                        .environmentObject(viewModel)
+                        .transition(.move(edge: .trailing))
+                }
             }
         }
     }
@@ -61,11 +78,15 @@ private extension HomeView {
                 .font(.title)
                 .bold()
                 .multilineTextAlignment(.center)
-            RoundedRectangleButton(
-                text: "НАЧАТЬ ВИКТОРИНУ",
-                textColor: Color.appThemeColors.white,
-                backgroundColor: Color.appThemeColors.moodyBlue
-            )
+            Button {
+                showQuiz.toggle()
+            } label: {
+                RoundedRectangleButton(
+                    text: "НАЧАТЬ ВИКТОРИНУ",
+                    textColor: Color.appThemeColors.white,
+                    backgroundColor: Color.appThemeColors.moodyBlue
+                )
+            }
         }
         .padding(.vertical, 30)
         .padding(.horizontal, 45)
@@ -81,4 +102,5 @@ private extension HomeView {
 
 #Preview {
     HomeView()
+        .environmentObject(DeveloperPreview.shared.quizViewModel)
 }

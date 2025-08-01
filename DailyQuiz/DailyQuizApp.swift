@@ -10,15 +10,11 @@ import SwiftUI
 @main
 struct DailyQuizApp: App {
     
-    @StateObject
-    private var viewModel = QuizViewModel()
-    
     var body: some Scene {
         WindowGroup {
             NavigationStack {
                 HomeView()
             }
-            .environmentObject(viewModel)
         }
     }
 }
