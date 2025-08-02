@@ -32,6 +32,7 @@ struct HistoryItemRowView: View {
                 Spacer()
                 Text(DateFormatterHelper.formatTime(date: quizResult.date))
             }
+            .foregroundStyle(Color.appThemeColors.accent)
         }
         .padding(24)
         .background(
