@@ -25,6 +25,9 @@ final class QuizViewModel: ObservableObject {
     var isLoading: Bool = false
     
     @Published
+    var quizIsFinished: Bool = false
+    
+    @Published
     var lastResult: QuizResult? = nil
     
     // MARK: - Private Properties
@@ -72,8 +75,10 @@ extension QuizViewModel {
         self.selectedAnswer = nil
         
         if currentQuestionIndex < quizQuestions.count - 1 {
+            quizIsFinished = false
             currentQuestionIndex += 1
         } else {
+            quizIsFinished = true
             currentQuestionIndex = 0
             saveResult()
         }
