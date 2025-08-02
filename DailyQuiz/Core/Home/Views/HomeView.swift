@@ -63,6 +63,13 @@ struct HomeView: View {
                     historyButton
                         .padding(.top, 46)
                         .padding(.bottom, 114)
+                        .navigationDestination(for: String.self) { value in
+                            if value == "history" {
+                                HistoryView()
+                                    .navigationBarBackButtonHidden(true)
+                                    .environmentObject(historyViewModel)
+                            }
+                        }
                     logo
                         .padding(.bottom, 40)
                     startQuizSection
@@ -83,9 +90,7 @@ struct HomeView: View {
 private extension HomeView {
     
     private var historyButton: some View {
-        Button {
-            showHistory.toggle()
-        } label: {
+        NavigationLink(value: "history") {
             HStack(spacing: 20) {
                 Text("История")
                     .foregroundStyle(Color.appThemeColors.moodyBlue)
@@ -97,11 +102,6 @@ private extension HomeView {
                 RoundedRectangle(cornerRadius: 25)
                     .foregroundStyle(Color.appThemeColors.white)
             )
-        }
-        .navigationDestination(isPresented: $showHistory) {
-            HistoryView()
-                .navigationBarBackButtonHidden(true)
-                .environmentObject(historyViewModel)
         }
     }
     

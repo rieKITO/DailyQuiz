@@ -50,10 +50,19 @@ struct QuizResultView: View {
 private extension QuizResultView {
     
     private var header: some View {
-        Text("Результаты")
-            .foregroundStyle(Color.appThemeColors.white)
-            .font(.largeTitle)
-            .fontWeight(.heavy)
+        ZStack {
+            Text("Результаты")
+                .foregroundStyle(Color.appThemeColors.white)
+                .font(.largeTitle)
+                .fontWeight(.heavy)
+            if showAnswers {
+                HStack {
+                    BackButton()
+                    Spacer()
+                }
+                .padding(.horizontal, 30)
+            }
+        }
     }
     
     private var resultSection: some View {

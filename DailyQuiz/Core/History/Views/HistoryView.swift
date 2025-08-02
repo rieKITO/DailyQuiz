@@ -27,7 +27,6 @@ struct HistoryView: View {
                     .padding(.top, 25)
                     .padding(.bottom, 40)
                 quizList
-                //Spacer()
             }
         }
         
@@ -71,6 +70,7 @@ private extension HistoryView {
                 showRepeatButton: false,
                 onRestart: nil
             )
+            .navigationBarBackButtonHidden(true)
         }
     }
     
