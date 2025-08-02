@@ -116,6 +116,7 @@ private extension QuizResultView {
                     allAnswers: question.allAnswers,
                     questionIndex: index,
                     countOfQuestions: quizResult.answeredQuestionsCount,
+                    mode: .resultSection(correctAnswer: question.correctAnswer),
                     showFooterButton: false,
                     goNext: nil,
                     selectedAnswer: .constant(question.selectedAnswer)

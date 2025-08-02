@@ -31,6 +31,7 @@ struct QuizView: View {
                     allAnswers: allAnswers,
                     questionIndex: viewModel.currentQuestionIndex,
                     countOfQuestions: viewModel.quizQuestions.count,
+                    mode: .quiz,
                     showFooterButton: true,
                     goNext: viewModel.goToNextQuestion,
                     selectedAnswer: $viewModel.selectedAnswer

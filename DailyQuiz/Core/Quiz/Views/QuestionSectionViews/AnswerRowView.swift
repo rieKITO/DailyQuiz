@@ -7,13 +7,37 @@
 
 import SwiftUI
 
+enum AnswerState {
+    case normal
+    case selected
+    case correct
+    case incorrect
+    
+    var answerColor: Color {
+        switch self {
+        case .normal: Color.appThemeColors.accent
+        case .selected: Color.appThemeColors.deepPurple
+        case .correct: Color.appThemeColors.green
+        case .incorrect: Color.appThemeColors.red
+        }
+    }
+    
+    var circleImage: Image {
+        switch self {
+        case .selected, .correct: Image("custom_checkmark")
+        case .incorrect: Image(systemName: "xmark")
+        default: Image("")
+        }
+    }
+}
+
 struct AnswerRowView: View {
     
     // MARK: - Init Properties
     
     let answer: String
     
-    let isSelected: Bool
+    let answerState: AnswerState
     
     // MARK: - Private Properties
     
@@ -42,18 +66,16 @@ private extension AnswerRowView {
     private var checkmarkCircle: some View {
         ZStack {
             Circle()
-                .stroke(
-                    isSelected ? Color.appThemeColors.deepPurple : Color.appThemeColors.accent,
-                    lineWidth: 1
-                )
+                .stroke(answerState.answerColor, lineWidth: 1)
                 .frame(width: circleSize, height: circleSize)
-            if isSelected {
-                Image("custom_checkmark")
+            if answerState != .normal {
+                answerState.circleImage
                     .resizable()
                     .frame(width: 12, height: 12)
+                    .foregroundStyle(Color.appThemeColors.white)
                     .background(
                         Circle()
-                            .fill(Color.appThemeColors.deepPurple)
+                            .fill(answerState.answerColor)
                             .frame(width: circleSize, height: circleSize)
                     )
             }
@@ -62,9 +84,9 @@ private extension AnswerRowView {
     
     private var backgroundRectangle: some View {
         Group {
-            if isSelected {
+            if answerState != .normal {
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.appThemeColors.deepPurple, lineWidth: 1)
+                    .stroke(answerState.answerColor, lineWidth: 1)
             } else {
                 RoundedRectangle(cornerRadius: 16)
                     .foregroundStyle(Color.appThemeColors.lightGray)
@@ -78,8 +100,10 @@ private extension AnswerRowView {
 
 #Preview {
     VStack(spacing: 20) {
-        AnswerRowView(answer: "Яблоко", isSelected: false)
-        AnswerRowView(answer: "Яблоко", isSelected: true)
+        AnswerRowView(answer: "Яблоко", answerState: .normal)
+        AnswerRowView(answer: "Яблоко", answerState: .selected)
+        AnswerRowView(answer: "Яблоко", answerState: .correct)
+        AnswerRowView(answer: "Яблоко", answerState: .incorrect)
     }
     .padding(.horizontal, 40)
 }

@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+enum questionSectionMode: Equatable {
+    case quiz
+    case resultSection(correctAnswer: String)
+}
+
 struct QuestionSectionView: View {
     
     // MARK: - Init Properties
@@ -18,6 +23,8 @@ struct QuestionSectionView: View {
     let questionIndex: Int
     
     let countOfQuestions: Int
+    
+    let mode: questionSectionMode
     
     // next button
     
@@ -39,8 +46,14 @@ struct QuestionSectionView: View {
     
     var body: some View {
         VStack {
-            questionNumber
-                .padding(.bottom, 20)
+            HStack {
+                questionNumber
+                if mode != .quiz {
+                    Spacer()
+                    questionStatus
+                }
+            }
+            .padding(.bottom, 20)
             questionTextLabel
                 .padding(.bottom, 15)
             answers
@@ -89,7 +102,7 @@ private extension QuestionSectionView {
     
     private var answers: some View {
         ForEach(shuffledAnswers, id: \.self) { answer in
-            AnswerRowView(answer: answer, isSelected: selectedAnswer == answer)
+            AnswerRowView(answer: answer, answerState: getAnswerState(answer: answer))
                 .padding(.vertical, 5)
                 .onTapGesture {
                     selectedAnswer = answer
@@ -110,6 +123,23 @@ private extension QuestionSectionView {
         .disabled(selectedAnswer == nil)
     }
     
+    private var questionStatus: some View {
+        let state = getAnswerState(answer: selectedAnswer ?? "")
+        return Group {
+            if state == .correct || state == .incorrect {
+                ZStack {
+                    Circle()
+                        .fill(state.answerColor)
+                        .frame(width: 20, height: 20)
+                    state.circleImage
+                        .resizable()
+                        .frame(width: 9, height: 9)
+                        .foregroundStyle(Color.appThemeColors.white)
+                }
+            }
+        }
+    }
+    
 }
 
 // MARK: - Private Methods
@@ -118,6 +148,19 @@ private extension QuestionSectionView {
     
     private func getShuffledAnswers(answers: [String]) -> [String] {
         return answers.shuffled()
+    }
+    
+    private func getAnswerState(answer: String) -> AnswerState {
+        switch mode {
+        case .quiz:
+            return selectedAnswer == answer ? .selected : .normal
+        case .resultSection(let correctAnswer):
+            if selectedAnswer == answer {
+                return answer == correctAnswer ? .correct : .incorrect
+            } else {
+                return .normal
+            }
+        }
     }
     
 }
@@ -140,6 +183,7 @@ private extension QuestionSectionView {
                     allAnswers: DeveloperPreview.shared.question.incorrectAnswers + [DeveloperPreview.shared.question.correctAnswer],
                     questionIndex: 1,
                     countOfQuestions: 5,
+                    mode: .quiz,
                     showFooterButton: true,
                     goNext: nil,
                     selectedAnswer: $selectedAnswer
