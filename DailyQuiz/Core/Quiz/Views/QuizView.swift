@@ -20,16 +20,20 @@ struct QuizView: View {
         VStack {
             header
                 .padding(.bottom, 30)
-            QuestionSectionView(
-                question: viewModel.quizQuestions[viewModel.currentQuestionIndex],
-                questionIndex: viewModel.currentQuestionIndex,
-                countOfQuestions: viewModel.quizQuestions.count,
-                showFooterButton: true,
-                goNext: viewModel.goToNextQuestion,
-                selectedAnswer: $viewModel.selectedAnswer
-            )
-            footerText
-                .padding(.top, 8)
+            if !viewModel.quizIsFinished {
+                QuestionSectionView(
+                    question: viewModel.quizQuestions[viewModel.currentQuestionIndex],
+                    questionIndex: viewModel.currentQuestionIndex,
+                    countOfQuestions: viewModel.quizQuestions.count,
+                    showFooterButton: true,
+                    goNext: viewModel.goToNextQuestion,
+                    selectedAnswer: $viewModel.selectedAnswer
+                )
+                footerText
+                    .padding(.top, 8)
+            } else {
+                Text("Hello")
+            }
             Spacer()
         }
         .padding(20)
