@@ -56,10 +56,10 @@ final class DeveloperPreview {
                 correctAnswer: "1"
             ),
             AnsweredQuestion(
-                questionText: "Correct answer is 5",
+                questionText: "Correct answer is 3",
                 allAnswers: ["1", "2", "3", "4"],
-                selectedAnswer: "5",
-                correctAnswer: "5"
+                selectedAnswer: "3",
+                correctAnswer: "3"
             ),
             AnsweredQuestion(
                 questionText: "Correct answer is 1",
