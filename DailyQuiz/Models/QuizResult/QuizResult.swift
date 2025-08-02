@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct QuizResult: Identifiable {
+struct QuizResult: Identifiable, Hashable {
     let id = UUID()
     let date: Date
     let answeredQuestions: [AnsweredQuestion]
@@ -22,6 +22,14 @@ struct QuizResult: Identifiable {
     
     var resultDescription: QuizResultDescription {
         QuizResultDescription(correctAnswersCount: correctAnswersCount)
+    }
+    
+    static func == (lhs: QuizResult, rhs: QuizResult) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 
