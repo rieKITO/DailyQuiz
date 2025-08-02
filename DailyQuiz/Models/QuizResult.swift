@@ -24,6 +24,7 @@ struct QuizResult: Identifiable {
 struct AnsweredQuestion: Identifiable {
     let id = UUID()
     let questionText: String
+    let allAnswers: [String]
     let selectedAnswer: String?
     let correctAnswer: String
     

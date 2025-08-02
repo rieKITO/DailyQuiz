@@ -100,6 +100,7 @@ extension QuizViewModel {
         let question = quizQuestions[currentQuestionIndex]
         let answeredQuestion = AnsweredQuestion(
             questionText: question.question,
+            allAnswers: question.incorrectAnswers + [question.correctAnswer],
             selectedAnswer: selectedAnswer,
             correctAnswer: question.correctAnswer
         )
