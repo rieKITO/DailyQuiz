@@ -16,6 +16,7 @@ struct DailyQuizApp: App {
                 HomeView()
                     .toolbar(.hidden)
             }
+            .preferredColorScheme(.light)
         }
     }
 }
