@@ -25,7 +25,7 @@ struct HistoryView: View {
             VStack {
                 header
                     .padding(.top, 25)
-                    .padding(.bottom, 40)
+                    
                 quizList
             }
         }
@@ -59,9 +59,24 @@ private extension HistoryView {
                         HistoryItemRowView(quizResult: quiz, quizIndex: index)
                             .padding(.bottom, 10)
                             .padding(.horizontal, 25)
+                            .contextMenu {
+                                Group {
+                                    Button {
+                                        historyViewModel.deleteResult(result: quiz)
+                                    } label: {
+                                        HStack {
+                                            Text("Удалить")
+                                            Image("custom_trash")
+                                        }
+                                        .foregroundStyle(Color.appThemeColors.red)
+                                    }
+
+                                }
+                            }
                     }
                 }
             }
+            .padding(.top, 40)
         }
         .navigationDestination(for: QuizResult.self) { quiz in
             QuizResultView(
