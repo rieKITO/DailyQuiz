@@ -13,6 +13,8 @@ struct QuizResultView: View {
     
     let quizResult: QuizResult
     
+    let showAnswers: Bool
+    
     let showRepeatButton: Bool
     
     let onRestart: (() -> Void)?
@@ -20,13 +22,19 @@ struct QuizResultView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack {
-            header
-                .padding(.top, 32)
-                .padding(.bottom, 40)
-            resultSection
-                .padding(.horizontal, 26)
-            Spacer()
+        ScrollView {
+            VStack {
+                header
+                    .padding(.top, 32)
+                    .padding(.bottom, 40)
+                resultSection
+                    .padding(.horizontal, 26)
+                if showAnswers {
+                    answers
+                        .padding(.top, 36)
+                }
+                Spacer()
+            }
         }
     }
 }
@@ -53,16 +61,8 @@ private extension QuizResultView {
                 .padding(.bottom, 12)
             quizResultSubtitle
             if showRepeatButton {
-                Button {
-                    onRestart?()
-                } label: {
-                    RoundedRectangleButton(
-                        text: "НАЧАТЬ ЗАНОВО",
-                        textColor: Color.appThemeColors.white,
-                        backgroundColor: Color.appThemeColors.moodyBlue
-                    )
-                }
-                .padding(.top, 64)
+                repeatButton
+                    .padding(.top, 64)
             }
         }
         .padding(32)
@@ -92,15 +92,68 @@ private extension QuizResultView {
             .multilineTextAlignment(.center)
     }
     
+    private var repeatButton: some View {
+        Button {
+            onRestart?()
+        } label: {
+            RoundedRectangleButton(
+                text: "НАЧАТЬ ЗАНОВО",
+                textColor: Color.appThemeColors.white,
+                backgroundColor: Color.appThemeColors.moodyBlue
+            )
+        }
+    }
+    
+    private var answers: some View {
+        VStack {
+            Text("Твои ответы")
+                .foregroundStyle(Color.appThemeColors.white)
+                .font(.largeTitle)
+                .fontWeight(.heavy)
+            ForEach(Array(quizResult.answeredQuestions.enumerated()), id: \.element.id) { index, question in
+                QuestionSectionView(
+                    questionText: question.questionText,
+                    allAnswers: question.allAnswers,
+                    questionIndex: index,
+                    countOfQuestions: quizResult.answeredQuestionsCount,
+                    showFooterButton: false,
+                    goNext: nil,
+                    selectedAnswer: .constant(question.selectedAnswer)
+                )
+                .padding(.horizontal, 32)
+                .padding(.vertical, 12)
+            }
+        }
+    }
+    
 }
 
 // MARK: - Preview
 
-#Preview {
+#Preview("Repeat button + no answers") {
     ZStack {
         // background
         Color.appThemeColors.moodyBlue.ignoresSafeArea()
         // foreground
-        QuizResultView(quizResult: DeveloperPreview.shared.quizResult, showRepeatButton: true, onRestart: nil)
+        QuizResultView(
+            quizResult: DeveloperPreview.shared.quizResult,
+            showAnswers: false,
+            showRepeatButton: true,
+            onRestart: nil
+        )
+    }
+}
+
+#Preview("No repeat button + answers") {
+    ZStack {
+        // background
+        Color.appThemeColors.moodyBlue.ignoresSafeArea()
+        // foreground
+        QuizResultView(
+            quizResult: DeveloperPreview.shared.quizResult,
+            showAnswers: true,
+            showRepeatButton: false,
+            onRestart: nil
+        )
     }
 }

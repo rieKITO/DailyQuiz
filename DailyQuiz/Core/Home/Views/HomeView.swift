@@ -43,7 +43,11 @@ struct HomeView: View {
                     .environmentObject(viewModel)
             } else if viewModel.quizIsFinished {
                 if let result = viewModel.lastResult {
-                    QuizResultView(quizResult: result, showRepeatButton: true) {
+                    QuizResultView(
+                        quizResult: result,
+                        showAnswers: false,
+                        showRepeatButton: true
+                    ) {
                         viewModel.restart()
                     }
                 }

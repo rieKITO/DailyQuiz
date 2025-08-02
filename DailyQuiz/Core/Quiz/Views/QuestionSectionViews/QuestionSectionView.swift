@@ -11,7 +11,9 @@ struct QuestionSectionView: View {
     
     // MARK: - Init Properties
     
-    let question: QuizQuestion
+    let questionText: String
+    
+    let allAnswers: [String]
     
     let questionIndex: Int
     
@@ -39,7 +41,7 @@ struct QuestionSectionView: View {
         VStack {
             questionNumber
                 .padding(.bottom, 20)
-            questionText
+            questionTextLabel
                 .padding(.bottom, 15)
             answers
             if showFooterButton {
@@ -56,15 +58,11 @@ struct QuestionSectionView: View {
         )
         .onAppear {
             if shuffledAnswers.isEmpty {
-                shuffledAnswers = getShuffledAnswers(
-                    answers: question.incorrectAnswers + [question.correctAnswer]
-                )
+                shuffledAnswers = getShuffledAnswers(answers: allAnswers)
             }
         }
-        .onChange(of: question.question) {  _ in
-            shuffledAnswers = getShuffledAnswers(answers:
-                question.incorrectAnswers + [question.correctAnswer]
-            )
+        .onChange(of: questionText) {  _ in
+            shuffledAnswers = getShuffledAnswers(answers: allAnswers)
         }
     }
 }
@@ -80,8 +78,8 @@ private extension QuestionSectionView {
             .bold()
     }
     
-    private var questionText: some View {
-        Text(question.question.removingHTMLOccurances)
+    private var questionTextLabel: some View {
+        Text(questionText.removingHTMLOccurances)
             .font(.title3)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
@@ -138,7 +136,8 @@ private extension QuestionSectionView {
                 Color.appThemeColors.moodyBlue.ignoresSafeArea()
                 // foreground
                 QuestionSectionView(
-                    question: DeveloperPreview.shared.question,
+                    questionText: DeveloperPreview.shared.question.question,
+                    allAnswers: DeveloperPreview.shared.question.incorrectAnswers + [DeveloperPreview.shared.question.correctAnswer],
                     questionIndex: 1,
                     countOfQuestions: 5,
                     showFooterButton: true,

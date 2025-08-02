@@ -14,33 +14,32 @@ struct QuizView: View {
     @EnvironmentObject
     private var viewModel: QuizViewModel
     
+    private var allAnswers: [String] {
+        viewModel.quizQuestions[viewModel.currentQuestionIndex].incorrectAnswers
+        + [viewModel.quizQuestions[viewModel.currentQuestionIndex].correctAnswer]
+    }
+    
     // MARK: - Body
     
     var body: some View {
         ZStack {
-            //if !viewModel.quizIsFinished {
-                VStack {
-                    header
-                        .padding(.bottom, 30)
-                    QuestionSectionView(
-                        question: viewModel.quizQuestions[viewModel.currentQuestionIndex],
-                        questionIndex: viewModel.currentQuestionIndex,
-                        countOfQuestions: viewModel.quizQuestions.count,
-                        showFooterButton: true,
-                        goNext: viewModel.goToNextQuestion,
-                        selectedAnswer: $viewModel.selectedAnswer
-                    )
-                    footerText
-                        .padding(.top, 8)
-                }
-                .padding(20)
-                .padding(.top, 10)
-            //}
-//            } else {
-//                if let result = viewModel.lastResult {
-//                    QuizResultView(quizResult: result, showRepeatButton: true)
-//                }
-//            }
+            VStack {
+                header
+                    .padding(.bottom, 30)
+                QuestionSectionView(
+                    questionText: viewModel.quizQuestions[viewModel.currentQuestionIndex].question,
+                    allAnswers: allAnswers,
+                    questionIndex: viewModel.currentQuestionIndex,
+                    countOfQuestions: viewModel.quizQuestions.count,
+                    showFooterButton: true,
+                    goNext: viewModel.goToNextQuestion,
+                    selectedAnswer: $viewModel.selectedAnswer
+                )
+                footerText
+                    .padding(.top, 8)
+            }
+            .padding(20)
+            .padding(.top, 10)
             Spacer()
         }
     }
