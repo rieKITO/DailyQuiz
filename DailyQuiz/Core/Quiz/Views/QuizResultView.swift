@@ -22,18 +22,24 @@ struct QuizResultView: View {
     // MARK: - Body
     
     var body: some View {
-        ScrollView {
-            VStack {
-                header
-                    .padding(.top, 32)
-                    .padding(.bottom, 40)
-                resultSection
-                    .padding(.horizontal, 26)
-                if showAnswers {
-                    answers
-                        .padding(.top, 36)
+        ZStack {
+            // background
+            Color.appThemeColors.moodyBlue.ignoresSafeArea()
+            
+            // foreground
+            ScrollView {
+                VStack {
+                    header
+                        .padding(.top, 32)
+                        .padding(.bottom, 40)
+                    resultSection
+                        .padding(.horizontal, 26)
+                    if showAnswers {
+                        answers
+                            .padding(.top, 36)
+                    }
+                    Spacer()
                 }
-                Spacer()
             }
         }
     }
