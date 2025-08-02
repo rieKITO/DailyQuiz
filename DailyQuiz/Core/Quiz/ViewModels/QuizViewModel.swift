@@ -81,7 +81,7 @@ extension QuizViewModel {
         } else {
             quizIsFinished = true
             currentQuestionIndex = 0
-            lastResult = QuizResult(date: Date(), answeredQuestions: answeredQuestions)
+            lastResult = QuizResult(id: UUID(), date: Date(), answeredQuestions: answeredQuestions)
             answeredQuestions = []
         }
     }

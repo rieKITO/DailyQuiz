@@ -73,6 +73,7 @@ final class QuizHistoryDataService {
         } ?? []
         
         return QuizResult(
+            id: entity.id ?? UUID(),
             date: entity.date ?? Date(),
             answeredQuestions: questions
         )

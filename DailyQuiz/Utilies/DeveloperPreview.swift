@@ -37,6 +37,7 @@ final class DeveloperPreview {
     )
     
     let quizResult: QuizResult = QuizResult(
+        id: UUID(),
         date: Date(),
         answeredQuestions: [
             AnsweredQuestion(

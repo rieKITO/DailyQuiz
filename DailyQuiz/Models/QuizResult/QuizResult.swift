@@ -8,7 +8,7 @@
 import Foundation
 
 struct QuizResult: Identifiable, Hashable {
-    let id = UUID()
+    let id: UUID
     let date: Date
     let answeredQuestions: [AnsweredQuestion]
     
