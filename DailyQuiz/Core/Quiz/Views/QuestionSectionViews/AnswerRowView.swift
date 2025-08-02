@@ -24,7 +24,8 @@ struct AnswerRowView: View {
     var body: some View {
         HStack(spacing: 25) {
             checkmarkCircle
-            Text(answer)
+            Text(answer.removingHTMLOccurances)
+                .minimumScaleFactor(0.5)
             Spacer()
         }
         .frame(maxWidth: .infinity)

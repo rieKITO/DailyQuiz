@@ -81,10 +81,12 @@ private extension QuestionSectionView {
     }
     
     private var questionText: some View {
-        Text(question.question)
+        Text(question.question.removingHTMLOccurances)
             .font(.title3)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
+            .lineLimit(4)
+            .minimumScaleFactor(0.5)
     }
     
     private var answers: some View {
