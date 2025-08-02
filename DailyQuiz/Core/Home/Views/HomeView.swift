@@ -22,6 +22,9 @@ struct HomeView: View {
     @State
     private var showErrorMessage: Bool = false
     
+    @State
+    private var showHistory: Bool = false
+    
     // MARK: - Body
     
     var body: some View {
@@ -76,17 +79,25 @@ struct HomeView: View {
 private extension HomeView {
     
     private var historyButton: some View {
-        HStack(spacing: 20) {
-            Text("История")
-                .foregroundStyle(Color.appThemeColors.moodyBlue)
-                .font(.headline)
-            Image("history")
+        Button {
+            showHistory.toggle()
+        } label: {
+            HStack(spacing: 20) {
+                Text("История")
+                    .foregroundStyle(Color.appThemeColors.moodyBlue)
+                    .font(.headline)
+                Image("history")
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 25)
+                    .foregroundStyle(Color.appThemeColors.white)
+            )
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 25)
-                .foregroundStyle(Color.appThemeColors.white)
-        )
+        .navigationDestination(isPresented: $showHistory) {
+            HistoryView()
+                .navigationBarBackButtonHidden(true)
+        }
     }
     
     private var logo: some View {
@@ -139,6 +150,9 @@ private extension HomeView {
 // MARK: - Preview
 
 #Preview {
-    HomeView()
-        .environmentObject(DeveloperPreview.shared.quizViewModel)
+    NavigationStack {
+        HomeView()
+            .toolbar(.hidden)
+            .environmentObject(DeveloperPreview.shared.quizViewModel)
+    }
 }

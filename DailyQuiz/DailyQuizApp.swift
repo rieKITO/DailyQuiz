@@ -14,6 +14,7 @@ struct DailyQuizApp: App {
         WindowGroup {
             NavigationStack {
                 HomeView()
+                    .toolbar(.hidden)
             }
         }
     }
