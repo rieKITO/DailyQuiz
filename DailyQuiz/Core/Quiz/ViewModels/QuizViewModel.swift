@@ -24,6 +24,13 @@ final class QuizViewModel: ObservableObject {
     @Published
     var isLoading: Bool = false
     
+    @Published
+    var lastResult: QuizResult? = nil
+    
+    // MARK: - Private Properties
+    
+    private var answeredQuestions: [AnsweredQuestion] = []
+    
     // MARK: - Services
     
     private let quizDataService = QuizDataService()
@@ -35,11 +42,6 @@ final class QuizViewModel: ObservableObject {
     init() {}
     
     // MARK: - Private Methods
-    
-    func loadQuizQuestions() {
-        isLoading = true
-        addSubscribers()
-    }
     
     private func addSubscribers() {
         quizDataService.$quizQuestions
@@ -58,13 +60,40 @@ final class QuizViewModel: ObservableObject {
 
 extension QuizViewModel {
     
+    // Public Methods
+    
+    func loadQuizQuestions() {
+        isLoading = true
+        addSubscribers()
+    }
+    
     func goToNextQuestion() {
-        selectedAnswer = nil
+        guard
+            let selectedAnswer = selectedAnswer,
+            currentQuestionIndex < quizQuestions.count
+        else { return }
+        
+        let question = quizQuestions[currentQuestionIndex]
+        let answeredQuestion = AnsweredQuestion(
+            questionText: question.question,
+            selectedAnswer: selectedAnswer,
+            correctAnswer: question.correctAnswer
+        )
+        
+        answeredQuestions.append(answeredQuestion)
+        
+        self.selectedAnswer = nil
         if currentQuestionIndex < quizQuestions.count - 1 {
             currentQuestionIndex += 1
         } else {
             currentQuestionIndex = 0
+            saveResult()
         }
+    }
+    
+    func saveResult() {
+        lastResult = QuizResult(date: Date(), answeredQuestions: answeredQuestions)
+        answeredQuestions = []
     }
     
 }
