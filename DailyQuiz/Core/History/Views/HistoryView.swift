@@ -9,6 +9,11 @@ import SwiftUI
 
 struct HistoryView: View {
     
+    // MARK: - View Model
+    
+    @EnvironmentObject
+    private var historyViewModel: QuizHistoryViewModel
+    
     // MARK: - Body
     
     var body: some View {
@@ -19,6 +24,7 @@ struct HistoryView: View {
             // foreground
             VStack {
                 header
+                Text("\(historyViewModel.quizHistory[0].correctAnswersCount)")
                 Spacer()
             }
         }
@@ -51,4 +57,5 @@ private extension HistoryView {
 
 #Preview {
     HistoryView()
+        .environmentObject(DeveloperPreview.shared.historyViewModel)
 }

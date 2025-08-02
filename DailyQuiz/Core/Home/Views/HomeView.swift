@@ -9,10 +9,13 @@ import SwiftUI
 
 struct HomeView: View {
     
-    // MARK: - View Model
+    // MARK: - View Models
     
     @StateObject
     private var viewModel = QuizViewModel()
+    
+    @StateObject
+    private var historyViewModel = QuizHistoryViewModel()
     
     // MARK: - State
     
@@ -44,6 +47,7 @@ struct HomeView: View {
             } else if showQuiz && !viewModel.quizQuestions.isEmpty && !viewModel.quizIsFinished {
                 QuizView()
                     .environmentObject(viewModel)
+                    .environmentObject(historyViewModel)
             } else if viewModel.quizIsFinished {
                 if let result = viewModel.lastResult {
                     QuizResultView(
@@ -97,6 +101,7 @@ private extension HomeView {
         .navigationDestination(isPresented: $showHistory) {
             HistoryView()
                 .navigationBarBackButtonHidden(true)
+                .environmentObject(historyViewModel)
         }
     }
     
@@ -154,5 +159,6 @@ private extension HomeView {
         HomeView()
             .toolbar(.hidden)
             .environmentObject(DeveloperPreview.shared.quizViewModel)
+            .environmentObject(DeveloperPreview.shared.historyViewModel)
     }
 }

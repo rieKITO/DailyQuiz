@@ -12,11 +12,14 @@ struct QuizView: View {
     // MARK: - View Model
     
     @EnvironmentObject
-    private var viewModel: QuizViewModel
+    private var quizViewModel: QuizViewModel
+    
+    @EnvironmentObject
+    private var historyViewModel: QuizHistoryViewModel
     
     private var allAnswers: [String] {
-        viewModel.quizQuestions[viewModel.currentQuestionIndex].incorrectAnswers
-        + [viewModel.quizQuestions[viewModel.currentQuestionIndex].correctAnswer]
+        quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex].incorrectAnswers
+        + [quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex].correctAnswer]
     }
     
     // MARK: - Body
@@ -27,15 +30,20 @@ struct QuizView: View {
                 header
                     .padding(.bottom, 30)
                 QuestionSectionView(
-                    questionText: viewModel.quizQuestions[viewModel.currentQuestionIndex].question,
+                    questionText: quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex].question,
                     allAnswers: allAnswers,
-                    questionIndex: viewModel.currentQuestionIndex,
-                    countOfQuestions: viewModel.quizQuestions.count,
+                    questionIndex: quizViewModel.currentQuestionIndex,
+                    countOfQuestions: quizViewModel.quizQuestions.count,
                     mode: .quiz,
                     showFooterButton: true,
-                    goNext: viewModel.goToNextQuestion,
-                    selectedAnswer: $viewModel.selectedAnswer
+                    goNext: quizViewModel.goToNextQuestion,
+                    selectedAnswer: $quizViewModel.selectedAnswer
                 )
+                .onChange(of: quizViewModel.quizIsFinished) { isFinished in
+                    if let result = quizViewModel.lastResult, isFinished {
+                        historyViewModel.saveResult(result: result)
+                    }
+                }
                 footerText
                     .padding(.top, 8)
             }
@@ -71,5 +79,6 @@ private extension QuizView {
         Color.appThemeColors.moodyBlue.ignoresSafeArea()
         QuizView()
             .environmentObject(DeveloperPreview.shared.quizViewModel)
+            .environmentObject(DeveloperPreview.shared.historyViewModel)
     }
 }

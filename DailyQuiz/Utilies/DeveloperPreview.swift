@@ -13,6 +13,8 @@ final class DeveloperPreview {
     
     let quizViewModel = QuizViewModel()
     
+    let historyViewModel = QuizHistoryViewModel()
+    
     private init() {
         addQuestionInViewModel()
     }

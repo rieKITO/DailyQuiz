@@ -80,18 +80,14 @@ extension QuizViewModel {
         } else {
             quizIsFinished = true
             currentQuestionIndex = 0
-            saveResult()
+            lastResult = QuizResult(date: Date(), answeredQuestions: answeredQuestions)
+            answeredQuestions = []
         }
     }
     
     func restart() {
         quizIsFinished = false
         quizQuestions = []
-    }
-    
-    func saveResult() {
-        lastResult = QuizResult(date: Date(), answeredQuestions: answeredQuestions)
-        answeredQuestions = []
     }
     
     // Private Methods
