@@ -34,4 +34,40 @@ final class DeveloperPreview {
         ]
     )
     
+    let quizResult: QuizResult = QuizResult(
+        date: Date(),
+        answeredQuestions: [
+            AnsweredQuestion(
+                questionText: "In the video-game franchise Kingdom Hearts, the main protagonist, carries a weapon with what shape?",
+                allAnswers: ["1", "Key", "3", "4"],
+                selectedAnswer: "Key",
+                correctAnswer: "Key"
+            ),
+            AnsweredQuestion(
+                questionText: "Correct answer is 3",
+                allAnswers: ["1", "2", "3", "4"],
+                selectedAnswer: "2",
+                correctAnswer: "3"
+            ),
+            AnsweredQuestion(
+                questionText: "Correct answer is 1",
+                allAnswers: ["1", "2", "3", "4"],
+                selectedAnswer: "1",
+                correctAnswer: "1"
+            ),
+            AnsweredQuestion(
+                questionText: "Correct answer is 5",
+                allAnswers: ["1", "2", "3", "4"],
+                selectedAnswer: "5",
+                correctAnswer: "5"
+            ),
+            AnsweredQuestion(
+                questionText: "Correct answer is 1",
+                allAnswers: ["1", "2", "3", "4"],
+                selectedAnswer: "4",
+                correctAnswer: "1"
+            )
+        ]
+    )
+    
 }
