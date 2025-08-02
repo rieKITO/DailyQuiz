@@ -67,6 +67,7 @@ extension QuizViewModel {
     
     func loadQuizQuestions() {
         isLoading = true
+        quizDataService.getQuizData()
         addSubscribers()
     }
     
