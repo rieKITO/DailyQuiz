@@ -10,16 +10,24 @@ import Combine
 
 final class QuizDataService {
     
+    // MARK: - Published
+    
     @Published
     var quizQuestions: [QuizQuestion] = []
     
-    var quizDataSubscription: AnyCancellable?
+    // MARK: - Private Properties
+    
+    private var quizDataSubscription: AnyCancellable?
+    
+    // MARK: - Init
     
     init() {
         getQuizData()
     }
     
-    private func getQuizData() {
+    // MARK: - Public Methods
+    
+    func getQuizData() {
         guard let url = URL(string: "https://opentdb.com/api.php?amount=5&type=multiple&category=9&difficulty=easy") else { return }
         quizDataSubscription = NetworkingManager.download(url: url)
             .decode(type: QuizResponse.self, decoder: JSONDecoder())
