@@ -61,6 +61,11 @@ struct QuestionSectionView: View {
                 )
             }
         }
+        .onChange(of: question.question) {  _ in
+            shuffledAnswers = getShuffledAnswers(answers:
+                question.incorrectAnswers + [question.correctAnswer]
+            )
+        }
     }
 }
 
