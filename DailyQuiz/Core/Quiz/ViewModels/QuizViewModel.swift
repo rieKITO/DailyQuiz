@@ -84,6 +84,11 @@ extension QuizViewModel {
         }
     }
     
+    func restart() {
+        quizIsFinished = false
+        quizQuestions = []
+    }
+    
     func saveResult() {
         lastResult = QuizResult(date: Date(), answeredQuestions: answeredQuestions)
         answeredQuestions = []

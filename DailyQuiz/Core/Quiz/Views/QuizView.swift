@@ -18,7 +18,7 @@ struct QuizView: View {
     
     var body: some View {
         ZStack {
-            if !viewModel.quizIsFinished {
+            //if !viewModel.quizIsFinished {
                 VStack {
                     header
                         .padding(.bottom, 30)
@@ -33,15 +33,16 @@ struct QuizView: View {
                     footerText
                         .padding(.top, 8)
                 }
-            } else {
-                if let result = viewModel.lastResult {
-                    QuizResultView(quizResult: result, showRepeatButton: true)
-                }
-            }
+                .padding(20)
+                .padding(.top, 10)
+            //}
+//            } else {
+//                if let result = viewModel.lastResult {
+//                    QuizResultView(quizResult: result, showRepeatButton: true)
+//                }
+//            }
             Spacer()
         }
-        .padding(20)
-        .padding(.top, 10)
     }
 }
 

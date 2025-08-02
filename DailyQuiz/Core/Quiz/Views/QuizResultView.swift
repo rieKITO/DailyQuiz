@@ -15,6 +15,8 @@ struct QuizResultView: View {
     
     let showRepeatButton: Bool
     
+    let onRestart: (() -> Void)?
+    
     // MARK: - Body
     
     var body: some View {
@@ -51,11 +53,15 @@ private extension QuizResultView {
                 .padding(.bottom, 12)
             quizResultSubtitle
             if showRepeatButton {
-                RoundedRectangleButton(
-                    text: "НАЧАТЬ ЗАНОВО",
-                    textColor: Color.appThemeColors.white,
-                    backgroundColor: Color.appThemeColors.moodyBlue
-                )
+                Button {
+                    onRestart?()
+                } label: {
+                    RoundedRectangleButton(
+                        text: "НАЧАТЬ ЗАНОВО",
+                        textColor: Color.appThemeColors.white,
+                        backgroundColor: Color.appThemeColors.moodyBlue
+                    )
+                }
                 .padding(.top, 64)
             }
         }
@@ -95,6 +101,6 @@ private extension QuizResultView {
         // background
         Color.appThemeColors.moodyBlue.ignoresSafeArea()
         // foreground
-        QuizResultView(quizResult: DeveloperPreview.shared.quizResult, showRepeatButton: true)
+        QuizResultView(quizResult: DeveloperPreview.shared.quizResult, showRepeatButton: true, onRestart: nil)
     }
 }

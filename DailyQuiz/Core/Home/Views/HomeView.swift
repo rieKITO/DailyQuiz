@@ -38,9 +38,15 @@ struct HomeView: View {
                     loader
                     Spacer()
                 }
-            } else if showQuiz && !viewModel.quizQuestions.isEmpty {
+            } else if showQuiz && !viewModel.quizQuestions.isEmpty && !viewModel.quizIsFinished {
                 QuizView()
                     .environmentObject(viewModel)
+            } else if viewModel.quizIsFinished {
+                if let result = viewModel.lastResult {
+                    QuizResultView(quizResult: result, showRepeatButton: true) {
+                        viewModel.restart()
+                    }
+                }
             } else {
                 VStack {
                     historyButton
@@ -93,7 +99,7 @@ private extension HomeView {
                 .bold()
                 .multilineTextAlignment(.center)
             Button {
-                showQuiz.toggle()
+                showQuiz = true
                 viewModel.loadQuizQuestions()
                 showErrorMessage = viewModel.quizQuestions.isEmpty ? true : false
             } label: {
