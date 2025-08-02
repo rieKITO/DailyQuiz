@@ -16,6 +16,9 @@ final class QuizViewModel: ObservableObject {
     var quizQuestions: [QuizQuestion] = []
     
     @Published
+    var currentQuizQuestionsShuffledAnswers: [[String]]? = []
+    
+    @Published
     var currentQuestionIndex: Int = 0
     
     @Published
@@ -50,8 +53,13 @@ final class QuizViewModel: ObservableObject {
         quizDataService.$quizQuestions
             .sink { [weak self] returnedQuizQuestions in
                 self?.quizQuestions = returnedQuizQuestions
+                self?.currentQuizQuestionsShuffledAnswers = self?.quizQuestions.map { question in
+                    (question.incorrectAnswers + [question.correctAnswer]).shuffled()
+                } ?? []
                 DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
-                    self?.isLoading = false
+                    DispatchQueue.main.async {
+                        self?.isLoading = false
+                    }
                 }
             }
             .store(in: &cancellables)

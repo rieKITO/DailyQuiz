@@ -18,7 +18,7 @@ struct QuestionSectionView: View {
     
     let questionText: String
     
-    let allAnswers: [String]
+    let shuffledAnswers: [String]
     
     let questionIndex: Int
     
@@ -36,11 +36,6 @@ struct QuestionSectionView: View {
     
     @Binding
     var selectedAnswer: String?
-    
-    // MARK: - State
-    
-    @State
-    private var shuffledAnswers: [String] = []
     
     // MARK: - Body
     
@@ -69,14 +64,6 @@ struct QuestionSectionView: View {
             RoundedRectangle(cornerRadius: 45)
                 .foregroundStyle(Color.appThemeColors.white)
         )
-        .onAppear {
-            if shuffledAnswers.isEmpty {
-                shuffledAnswers = getShuffledAnswers(answers: allAnswers)
-            }
-        }
-        .onChange(of: questionText) {  _ in
-            shuffledAnswers = getShuffledAnswers(answers: allAnswers)
-        }
     }
 }
 
@@ -180,7 +167,7 @@ private extension QuestionSectionView {
                 // foreground
                 QuestionSectionView(
                     questionText: DeveloperPreview.shared.question.question,
-                    allAnswers: DeveloperPreview.shared.question.incorrectAnswers + [DeveloperPreview.shared.question.correctAnswer],
+                    shuffledAnswers: (DeveloperPreview.shared.question.incorrectAnswers + [DeveloperPreview.shared.question.correctAnswer]).shuffled(),
                     questionIndex: 1,
                     countOfQuestions: 5,
                     mode: .quiz,

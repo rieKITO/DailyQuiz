@@ -21,6 +21,10 @@ final class DeveloperPreview {
     
     func addQuestionInViewModel() {
         quizViewModel.quizQuestions.append(question)
+        quizViewModel.currentQuestionIndex = 0
+        quizViewModel.currentQuizQuestionsShuffledAnswers = quizViewModel.quizQuestions.map { question in
+            (question.incorrectAnswers + [question.correctAnswer]).shuffled()
+        }
     }
     
     let question: QuizQuestion = QuizQuestion(

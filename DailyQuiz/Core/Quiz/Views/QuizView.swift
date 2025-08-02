@@ -17,9 +17,8 @@ struct QuizView: View {
     @EnvironmentObject
     private var historyViewModel: QuizHistoryViewModel
     
-    private var allAnswers: [String] {
-        quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex].incorrectAnswers
-        + [quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex].correctAnswer]
+    private var shuffledAnswers: [String] {
+        quizViewModel.currentQuizQuestionsShuffledAnswers?[quizViewModel.currentQuestionIndex] ?? []
     }
     
     // MARK: - Body
@@ -31,7 +30,7 @@ struct QuizView: View {
                     .padding(.bottom, 30)
                 QuestionSectionView(
                     questionText: quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex].question,
-                    allAnswers: allAnswers,
+                    shuffledAnswers: shuffledAnswers,
                     questionIndex: quizViewModel.currentQuestionIndex,
                     countOfQuestions: quizViewModel.quizQuestions.count,
                     mode: .quiz,

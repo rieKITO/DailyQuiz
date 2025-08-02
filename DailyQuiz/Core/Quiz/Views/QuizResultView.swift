@@ -128,7 +128,7 @@ private extension QuizResultView {
             ForEach(Array(quizResult.answeredQuestions.enumerated()), id: \.element.id) { index, question in
                 QuestionSectionView(
                     questionText: question.questionText,
-                    allAnswers: question.allAnswers,
+                    shuffledAnswers: question.allAnswers,
                     questionIndex: index,
                     countOfQuestions: quizResult.answeredQuestionsCount,
                     mode: .resultSection(correctAnswer: question.correctAnswer),
