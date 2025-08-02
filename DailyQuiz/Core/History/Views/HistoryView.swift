@@ -24,8 +24,10 @@ struct HistoryView: View {
             // foreground
             VStack {
                 header
-                
-                Spacer()
+                    .padding(.top, 25)
+                    .padding(.bottom, 40)
+                quizList
+                //Spacer()
             }
         }
         
@@ -48,7 +50,28 @@ private extension HistoryView {
             }
             .padding(.horizontal, 30)
         }
-        .padding(.vertical, 25)
+    }
+    
+    private var quizList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(Array(historyViewModel.quizHistory.enumerated()), id: \.element.id) { index, quiz in
+                    NavigationLink(value: quiz) {
+                        HistoryItemRowView(quizResult: quiz, quizIndex: index)
+                            .padding(.bottom, 10)
+                            .padding(.horizontal, 25)
+                    }
+                }
+            }
+        }
+        .navigationDestination(for: QuizResult.self) { quiz in
+            QuizResultView(
+                quizResult: quiz,
+                showAnswers: true,
+                showRepeatButton: false,
+                onRestart: nil
+            )
+        }
     }
     
 }
@@ -56,6 +79,8 @@ private extension HistoryView {
 // MARK: - Preview
 
 #Preview {
-    HistoryView()
-        .environmentObject(DeveloperPreview.shared.historyViewModel)
+    NavigationStack {
+        HistoryView()
+            .environmentObject(DeveloperPreview.shared.historyViewModel)
+    }
 }
