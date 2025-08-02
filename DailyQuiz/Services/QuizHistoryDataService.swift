@@ -30,7 +30,7 @@ final class QuizHistoryDataService {
         container = NSPersistentContainer(name: containerName)
         container.loadPersistentStores { [weak self] _, error in
             if let error = error {
-                print("❌ Error loading Core Data: \(error.localizedDescription)")
+                print("Error loading persistent stores: \(error.localizedDescription)")
             } else {
                 self?.loadQuizHistory()
             }
@@ -58,7 +58,7 @@ final class QuizHistoryDataService {
             let entities = try container.viewContext.fetch(request)
             allQuizHistory = entities.map (mapEntityToModel)
         } catch {
-            print("❌ Failed to fetch quiz history: \(error)")
+            print("Failed to load data: \(error)")
         }
     }
     
@@ -89,13 +89,13 @@ final class QuizHistoryDataService {
         entity.difficulty = "Any"
         
         result.answeredQuestions.forEach { answered in
-            let qEntity = AnsweredQuestionEntity(context: container.viewContext)
-            qEntity.id = answered.id
-            qEntity.questionText = answered.questionText
-            qEntity.correctAnswer = answered.correctAnswer
-            qEntity.selectedAnswer = answered.selectedAnswer
-            qEntity.allAnswers = answered.allAnswers as NSArray
-            qEntity.quizResult = entity
+            let answeredQuestionEntity = AnsweredQuestionEntity(context: container.viewContext)
+            answeredQuestionEntity.id = answered.id
+            answeredQuestionEntity.questionText = answered.questionText
+            answeredQuestionEntity.correctAnswer = answered.correctAnswer
+            answeredQuestionEntity.selectedAnswer = answered.selectedAnswer
+            answeredQuestionEntity.allAnswers = answered.allAnswers as NSArray
+            answeredQuestionEntity.quizResult = entity
         }
         
         applyChanges()
@@ -117,7 +117,7 @@ final class QuizHistoryDataService {
         do {
             try container.viewContext.save()
         } catch {
-            print("Failed to save context: \(error)")
+            print("Failed to save: \(error)")
         }
     }
     
