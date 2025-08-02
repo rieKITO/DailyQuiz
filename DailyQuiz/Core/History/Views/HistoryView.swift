@@ -24,7 +24,7 @@ struct HistoryView: View {
             // foreground
             VStack {
                 header
-                Text("\(historyViewModel.quizHistory[0].correctAnswersCount)")
+                
                 Spacer()
             }
         }
