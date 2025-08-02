@@ -53,7 +53,7 @@ private extension QuizResultView {
     private var resultSection: some View {
         VStack {
             Group {
-                StarsView(rating: quizResult.correctAnswersCount)
+                StarsView(rating: quizResult.correctAnswersCount, starSize: 52)
                 correctAnswersCount
             }
             .padding(.bottom, 24)
