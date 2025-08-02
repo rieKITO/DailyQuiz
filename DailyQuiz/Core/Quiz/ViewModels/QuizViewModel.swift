@@ -68,6 +68,25 @@ extension QuizViewModel {
     }
     
     func goToNextQuestion() {
+        saveAnswer()
+        self.selectedAnswer = nil
+        
+        if currentQuestionIndex < quizQuestions.count - 1 {
+            currentQuestionIndex += 1
+        } else {
+            currentQuestionIndex = 0
+            saveResult()
+        }
+    }
+    
+    func saveResult() {
+        lastResult = QuizResult(date: Date(), answeredQuestions: answeredQuestions)
+        answeredQuestions = []
+    }
+    
+    // Private Methods
+    
+    private func saveAnswer() {
         guard
             let selectedAnswer = selectedAnswer,
             currentQuestionIndex < quizQuestions.count
@@ -81,19 +100,6 @@ extension QuizViewModel {
         )
         
         answeredQuestions.append(answeredQuestion)
-        
-        self.selectedAnswer = nil
-        if currentQuestionIndex < quizQuestions.count - 1 {
-            currentQuestionIndex += 1
-        } else {
-            currentQuestionIndex = 0
-            saveResult()
-        }
-    }
-    
-    func saveResult() {
-        lastResult = QuizResult(date: Date(), answeredQuestions: answeredQuestions)
-        answeredQuestions = []
     }
     
 }
