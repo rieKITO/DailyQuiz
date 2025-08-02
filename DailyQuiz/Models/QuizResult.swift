@@ -10,7 +10,7 @@ import Foundation
 struct QuizResult: Identifiable {
     let id = UUID()
     let date: Date
-    let answeredQuestions: [AnsweredQuestions]
+    let answeredQuestions: [AnsweredQuestion]
     
     var correctAnswersCount: Int {
         answeredQuestions.filter({ $0.answerIsCorrect }).count
@@ -21,7 +21,7 @@ struct QuizResult: Identifiable {
     }
 }
 
-struct AnsweredQuestions: Identifiable {
+struct AnsweredQuestion: Identifiable {
     let id = UUID()
     let questionText: String
     let selectedAnswer: String?
