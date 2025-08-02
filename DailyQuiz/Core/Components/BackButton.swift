@@ -8,11 +8,33 @@
 import SwiftUI
 
 struct BackButton: View {
+    
+    // MARK: - Environment
+    
+    @Environment(\.dismiss)
+    private var dismiss
+    
+    // MARK: - Body
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            dismiss.callAsFunction()
+        } label: {
+            Image(systemName: "chevron.left")
+                .foregroundStyle(Color.appThemeColors.white)
+                .font(.headline)
+        }
+
     }
 }
 
+// MARK: - Preview
+
 #Preview {
-    BackButton()
+    ZStack {
+        // background
+        Color.appThemeColors.moodyBlue.ignoresSafeArea()
+        // foreground
+        BackButton()
+    }
 }
