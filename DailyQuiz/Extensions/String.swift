@@ -22,7 +22,8 @@ extension String {
             "&amp;": "&",
             "&lt;": "<",
             "&gt;": ">",
-            "&#039;": "'"
+            "&#039;": "'",
+            "&shy;": ""
         ]
         
         for (entity, character) in entities {
