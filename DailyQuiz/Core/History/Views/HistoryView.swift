@@ -22,7 +22,7 @@ struct HistoryView: View {
     // MARK: - Binding
     
     @Binding
-    var showQuiz: Bool
+    var showFilters: Bool
     
     // MARK: - State
     
@@ -87,7 +87,7 @@ private extension HistoryView {
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 40)
             Button {
-                showQuiz = true
+                showFilters = true
                 dismiss.callAsFunction()
             } label: {
                 RoundedRectangleButton(
@@ -187,7 +187,7 @@ private extension HistoryView {
 
 #Preview {
     NavigationStack {
-        HistoryView(showQuiz: .constant(false))
+        HistoryView(showFilters: .constant(false))
             .environmentObject(DeveloperPreview.shared.historyViewModel)
     }
 }

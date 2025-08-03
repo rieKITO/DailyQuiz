@@ -28,6 +28,9 @@ struct HomeView: View {
     @State
     private var showHistory: Bool = false
     
+    @State
+    private var showFilters: Bool = false
+    
     // MARK: - Body
     
     var body: some View {
@@ -57,6 +60,16 @@ struct HomeView: View {
                     }
                 }
             // start view
+            } else if showFilters {
+                FiltersView {
+                    showFilters = false
+                    showQuiz = true
+                    quizViewModel.loadQuizQuestions()
+                    if quizViewModel.quizQuestions.isEmpty {
+                        showErrorMessage = true
+                    }
+                }
+                .environmentObject(quizViewModel)
             } else {
                 VStack {
                     historyButton
@@ -64,7 +77,7 @@ struct HomeView: View {
                         .padding(.bottom, 114)
                         .navigationDestination(for: String.self) { value in
                             if value == "history" {
-                                HistoryView(showQuiz: $showQuiz)
+                                HistoryView(showFilters: $showFilters)
                                     .navigationBarBackButtonHidden(true)
                                     .environmentObject(historyViewModel)
                             }
@@ -129,12 +142,7 @@ private extension HomeView {
                 .bold()
                 .multilineTextAlignment(.center)
             Button {
-                quizViewModel.loadQuizQuestions()
-                if !quizViewModel.quizQuestions.isEmpty {
-                    showQuiz = true
-                } else {
-                    showErrorMessage = true
-                }
+                showFilters = true
             } label: {
                 RoundedRectangleButton(
                     text: "НАЧАТЬ ВИКТОРИНУ",

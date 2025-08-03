@@ -36,6 +36,9 @@ final class QuizViewModel: ObservableObject {
     @Published
     var resultAnswerShown: Bool = false
     
+    @Published
+    var filters = QuizFilters()
+    
     // MARK: - Private Properties
     
     private var answeredQuestions: [AnsweredQuestion] = []
@@ -78,7 +81,7 @@ extension QuizViewModel {
     
     func loadQuizQuestions() {
         isLoading = true
-        quizDataService.getQuizData()
+        quizDataService.getQuizData(filters: filters)
         addSubscribers()
     }
     
@@ -100,13 +103,19 @@ extension QuizViewModel {
         answeredQuestions = []
         lastResult = nil
         quizQuestions = []
+        filters.category = nil
+        filters.difficulty = nil
     }
     
     func finishQuiz(shouldSaveResult: Bool) {
         quizIsFinished = true
         
         if shouldSaveResult {
-            lastResult = QuizResult(id: UUID(), date: Date(), answeredQuestions: answeredQuestions)
+            lastResult = QuizResult(
+                id: UUID(),
+                date: Date(),
+                answeredQuestions: answeredQuestions
+            )
         } else {
             lastResult = nil
         }

@@ -21,14 +21,12 @@ final class QuizDataService {
     
     // MARK: - Init
     
-    init() {
-        getQuizData()
-    }
+    init() { }
     
     // MARK: - Public Methods
     
-    func getQuizData() {
-        guard let url = URL(string: "https://opentdb.com/api.php?amount=5&type=multiple&category=9&difficulty=easy") else { return }
+    func getQuizData(filters: QuizFilters) {
+        guard let url = URL(string: "https://opentdb.com/api.php?amount=5&type=multiple&category=\(filters.category ?? 9)&difficulty=\(filters.difficulty ?? "easy")") else { return }
         quizDataSubscription = NetworkingManager.download(url: url)
             .decode(type: QuizResponse.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
