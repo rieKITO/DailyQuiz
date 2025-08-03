@@ -1,5 +1,6 @@
 # DaylyQuiz Application
 Surf iOS Summer School'25
+[Демонстрация работы приложения](https://www.youtube.com/shorts/hN6XEm4Qmq0)
 
 ## Используемые технологии
 - SwiftUI
