@@ -36,6 +36,8 @@ struct HomeView: View {
             Color.appThemeColors.moodyBlue.edgesIgnoringSafeArea(.all)
             
             // foreground
+            
+            // loader
             if quizViewModel.isLoading {
                 VStack {
                     logo
@@ -44,10 +46,12 @@ struct HomeView: View {
                     loader
                     Spacer()
                 }
+            // quiz
             } else if showQuiz && !quizViewModel.quizQuestions.isEmpty && !quizViewModel.quizIsFinished {
                 QuizView()
                     .environmentObject(quizViewModel)
                     .environmentObject(historyViewModel)
+            // quiz result
             } else if quizViewModel.quizIsFinished {
                 if let result = quizViewModel.lastResult {
                     QuizResultView(
@@ -58,6 +62,7 @@ struct HomeView: View {
                         quizViewModel.restart()
                     }
                 }
+            // start view
             } else {
                 VStack {
                     historyButton
