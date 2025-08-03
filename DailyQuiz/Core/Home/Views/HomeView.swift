@@ -162,9 +162,7 @@ private extension HomeView {
             logo
                 .padding(.top, 224)
                 .padding(.bottom, 130)
-            Image("loader")
-                .resizable()
-                .frame(width: 54, height: 54)
+            LoaderView()
             Spacer()
         }
     }
