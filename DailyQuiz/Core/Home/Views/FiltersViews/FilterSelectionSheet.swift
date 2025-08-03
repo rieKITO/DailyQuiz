@@ -17,30 +17,8 @@ struct FilterSelectionSheet<T: Identifiable>: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(title)
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundStyle(Color.appThemeColors.deepPurple)
-                .padding(.top, 30)
-            
-            ForEach(items) { item in
-                HStack {
-                    Text(displayName(item))
-                        .foregroundStyle(Color.appThemeColors.deepPurple)
-                        .fontWeight(item.id == selected?.id ? .heavy : .medium)
-                    Spacer()
-                    if item.id == selected?.id {
-                        Image(systemName: "checkmark")
-                            .tint(Color.appThemeColors.deepPurple)
-                            .fontWeight(.heavy)
-                    }
-                }
-                .padding(.vertical, 4)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    onSelect(item)
-                }
-            }
+            header
+            itemsList
             Spacer()
         }
         .padding()
@@ -49,6 +27,41 @@ struct FilterSelectionSheet<T: Identifiable>: View {
         )
         .presentationDragIndicator(.visible)
     }
+}
+
+// MARK: - Layout
+
+private extension FilterSelectionSheet {
+    
+    private var header: some View {
+        Text(title)
+            .font(.title)
+            .fontWeight(.bold)
+            .foregroundStyle(Color.appThemeColors.deepPurple)
+            .padding(.top, 30)
+    }
+    
+    private var itemsList: some View {
+        ForEach(items) { item in
+            HStack {
+                Text(displayName(item))
+                    .foregroundStyle(Color.appThemeColors.deepPurple)
+                    .fontWeight(item.id == selected?.id ? .heavy : .medium)
+                Spacer()
+                if item.id == selected?.id {
+                    Image(systemName: "checkmark")
+                        .tint(Color.appThemeColors.deepPurple)
+                        .fontWeight(.heavy)
+                }
+            }
+            .padding(.vertical, 4)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                onSelect(item)
+            }
+        }
+    }
+    
 }
 
 // MARK: - Preview
