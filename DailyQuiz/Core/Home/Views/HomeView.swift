@@ -12,7 +12,7 @@ struct HomeView: View {
     // MARK: - View Models
     
     @StateObject
-    private var viewModel = QuizViewModel()
+    private var quizViewModel = QuizViewModel()
     
     @StateObject
     private var historyViewModel = QuizHistoryViewModel()
@@ -36,7 +36,7 @@ struct HomeView: View {
             Color.appThemeColors.moodyBlue.edgesIgnoringSafeArea(.all)
             
             // foreground
-            if viewModel.isLoading {
+            if quizViewModel.isLoading {
                 VStack {
                     logo
                         .padding(.top, 224)
@@ -44,18 +44,18 @@ struct HomeView: View {
                     loader
                     Spacer()
                 }
-            } else if showQuiz && !viewModel.quizQuestions.isEmpty && !viewModel.quizIsFinished {
+            } else if showQuiz && !quizViewModel.quizQuestions.isEmpty && !quizViewModel.quizIsFinished {
                 QuizView()
-                    .environmentObject(viewModel)
+                    .environmentObject(quizViewModel)
                     .environmentObject(historyViewModel)
-            } else if viewModel.quizIsFinished {
-                if let result = viewModel.lastResult {
+            } else if quizViewModel.quizIsFinished {
+                if let result = quizViewModel.lastResult {
                     QuizResultView(
                         quizResult: result,
                         showAnswers: false,
                         showRepeatButton: true
                     ) {
-                        viewModel.restart()
+                        quizViewModel.restart()
                     }
                 }
             } else {
@@ -84,11 +84,11 @@ struct HomeView: View {
         }
         .onChange(of: showQuiz) { newValue in
             if newValue {
-                viewModel.loadQuizQuestions()
-                showErrorMessage = viewModel.quizQuestions.isEmpty ? true : false
+                quizViewModel.loadQuizQuestions()
+                showErrorMessage = quizViewModel.quizQuestions.isEmpty ? true : false
             }
         }
-        .onChange(of: viewModel.quizIsFinished) { isFinished in
+        .onChange(of: quizViewModel.quizIsFinished) { isFinished in
             if isFinished {
                 showQuiz = false
             }
@@ -131,8 +131,8 @@ private extension HomeView {
                 .multilineTextAlignment(.center)
             Button {
                 showQuiz = true
-                viewModel.loadQuizQuestions()
-                showErrorMessage = viewModel.quizQuestions.isEmpty ? true : false
+                quizViewModel.loadQuizQuestions()
+                showErrorMessage = quizViewModel.quizQuestions.isEmpty ? true : false
             } label: {
                 RoundedRectangleButton(
                     text: "НАЧАТЬ ВИКТОРИНУ",

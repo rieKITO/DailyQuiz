@@ -14,7 +14,12 @@ struct HistoryView: View {
     @EnvironmentObject
     private var historyViewModel: QuizHistoryViewModel
     
-    @Environment(\.dismiss) private var dismiss
+    // MARK: - Environment
+    
+    @Environment(\.dismiss)
+    private var dismiss
+    
+    // MARK: - Binding
     
     @Binding
     var showQuiz: Bool
