@@ -41,7 +41,7 @@ struct QuizView: View {
     
     // MARK: - Private Properties
     
-    private let quizDuration: TimeInterval = 10
+    private let quizDuration: TimeInterval = 300
     
     // MARK: - Body
     
