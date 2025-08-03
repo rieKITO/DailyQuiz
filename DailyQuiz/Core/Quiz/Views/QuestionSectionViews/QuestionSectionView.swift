@@ -114,6 +114,7 @@ private extension QuestionSectionView {
             AnswerRowView(answer: answer, answerState: getAnswerState(answer: answer))
                 .padding(.vertical, 5)
                 .onTapGesture {
+                    guard !isInteractionDisabled else { return } 
                     selectedAnswer = answer
                 }
         }
