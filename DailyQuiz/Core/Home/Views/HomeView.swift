@@ -39,13 +39,7 @@ struct HomeView: View {
             
             // loader
             if quizViewModel.isLoading {
-                VStack {
-                    logo
-                        .padding(.top, 224)
-                        .padding(.bottom, 130)
-                    loader
-                    Spacer()
-                }
+                loading
             // quiz
             } else if showQuiz && !quizViewModel.quizQuestions.isEmpty && !quizViewModel.quizIsFinished {
                 QuizView(showQuiz: $showQuiz)
@@ -163,10 +157,16 @@ private extension HomeView {
             .fontWeight(.heavy)
     }
     
-    private var loader: some View {
-        Image("loader")
-            .resizable()
-            .frame(width: 54, height: 54)
+    private var loading: some View {
+        VStack {
+            logo
+                .padding(.top, 224)
+                .padding(.bottom, 130)
+            Image("loader")
+                .resizable()
+                .frame(width: 54, height: 54)
+            Spacer()
+        }
     }
     
 }
