@@ -57,8 +57,6 @@ private extension HistoryView {
                 ForEach(Array(historyViewModel.quizHistory.enumerated()), id: \.element.id) { index, quiz in
                     NavigationLink(value: quiz) {
                         HistoryItemRowView(quizResult: quiz, quizIndex: index)
-                            .padding(.bottom, 10)
-                            .padding(.horizontal, 25)
                             .contextMenu {
                                 Group {
                                     Button {
@@ -73,6 +71,8 @@ private extension HistoryView {
 
                                 }
                             }
+                            .padding(.bottom, 10)
+                            .padding(.horizontal, 25)
                     }
                 }
             }
