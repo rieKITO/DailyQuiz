@@ -17,6 +17,8 @@ struct QuizView: View {
     @EnvironmentObject
     private var historyViewModel: QuizHistoryViewModel
     
+    // MARK: - Computed Properties
+    
     private var shuffledAnswers: [String] {
         quizViewModel.currentQuizQuestionsShuffledAnswers?[quizViewModel.currentQuestionIndex] ?? []
     }

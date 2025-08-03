@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QuizResultView: View {
     
-    // MARK: - Properties
+    // MARK: - Init Properties
     
     let quizResult: QuizResult
     

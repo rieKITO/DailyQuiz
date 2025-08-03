@@ -24,6 +24,10 @@ struct HistoryView: View {
     @Binding
     var showQuiz: Bool
     
+    // MARK: - State
+    
+    
+    
     // MARK: - Body
     
     var body: some View {
