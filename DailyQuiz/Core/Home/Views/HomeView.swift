@@ -65,7 +65,7 @@ struct HomeView: View {
                         .padding(.bottom, 114)
                         .navigationDestination(for: String.self) { value in
                             if value == "history" {
-                                HistoryView()
+                                HistoryView(showQuiz: $showQuiz)
                                     .navigationBarBackButtonHidden(true)
                                     .environmentObject(historyViewModel)
                             }
@@ -80,6 +80,17 @@ struct HomeView: View {
                     }
                     Spacer()
                 }
+            }
+        }
+        .onChange(of: showQuiz) { newValue in
+            if newValue {
+                viewModel.loadQuizQuestions()
+                showErrorMessage = viewModel.quizQuestions.isEmpty ? true : false
+            }
+        }
+        .onChange(of: viewModel.quizIsFinished) { isFinished in
+            if isFinished {
+                showQuiz = false
             }
         }
     }

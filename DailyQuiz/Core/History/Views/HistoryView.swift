@@ -14,6 +14,11 @@ struct HistoryView: View {
     @EnvironmentObject
     private var historyViewModel: QuizHistoryViewModel
     
+    @Environment(\.dismiss) private var dismiss
+    
+    @Binding
+    var showQuiz: Bool
+    
     // MARK: - Body
     
     var body: some View {
@@ -25,8 +30,18 @@ struct HistoryView: View {
             VStack {
                 header
                     .padding(.top, 25)
-                    
-                quizList
+                if historyViewModel.quizHistory.isEmpty {
+                    emptyHistoryView
+                        .padding(.horizontal)
+                        .padding(.top, 30)
+                    Spacer()
+                    Image("logo")
+                        .resizable()
+                        .frame(width: 180, height: 40)
+                        .padding(.bottom, 70)
+                } else {
+                    quizList
+                }
             }
         }
         
@@ -49,6 +64,31 @@ private extension HistoryView {
             }
             .padding(.horizontal, 30)
         }
+    }
+    
+    private var emptyHistoryView: some View {
+        VStack {
+            Text("Вы еще не проходили ни одной викторины")
+                .foregroundStyle(Color.appThemeColors.accent)
+                .font(.title3)
+                .multilineTextAlignment(.center)
+                .padding(.bottom, 40)
+            Button {
+                showQuiz = true
+                dismiss.callAsFunction()
+            } label: {
+                RoundedRectangleButton(
+                    text: "НАЧАТЬ ВИКТОРИНУ",
+                    textColor: Color.appThemeColors.white,
+                    backgroundColor: Color.appThemeColors.moodyBlue
+                )
+            }
+        }
+        .padding(32)
+        .background(
+            RoundedRectangle(cornerRadius: 46)
+                .fill(Color.appThemeColors.white)
+        )
     }
     
     private var quizList: some View {
@@ -95,7 +135,7 @@ private extension HistoryView {
 
 #Preview {
     NavigationStack {
-        HistoryView()
+        HistoryView(showQuiz: .constant(false))
             .environmentObject(DeveloperPreview.shared.historyViewModel)
     }
 }
