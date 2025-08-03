@@ -134,6 +134,8 @@ private extension QuizResultView {
                     mode: .resultSection(correctAnswer: question.correctAnswer),
                     showFooterButton: false,
                     goNext: nil,
+                    elapsedTime: nil,
+                    totalTime: nil,
                     selectedAnswer: .constant(question.selectedAnswer)
                 )
                 .padding(.horizontal, 32)

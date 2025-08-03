@@ -17,11 +17,31 @@ struct QuizView: View {
     @EnvironmentObject
     private var historyViewModel: QuizHistoryViewModel
     
+    // MARK: - Binding
+    
+    @Binding
+    var showQuiz: Bool
+    
     // MARK: - Computed Properties
     
     private var shuffledAnswers: [String] {
         quizViewModel.currentQuizQuestionsShuffledAnswers?[quizViewModel.currentQuestionIndex] ?? []
     }
+    
+    // MARK: - State
+    
+    @State
+    private var timer: Timer?
+    
+    @State
+    private var elapsedTime: TimeInterval = 0
+    
+    @State
+    private var isTimeout: Bool = false
+    
+    // MARK: - Private Properties
+    
+    private let quizDuration: TimeInterval = 10
     
     // MARK: - Body
     
@@ -29,29 +49,41 @@ struct QuizView: View {
         ZStack {
             VStack {
                 header
-                    .padding(.bottom, 30)
-                QuestionSectionView(
-                    questionText: quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex].question,
-                    shuffledAnswers: shuffledAnswers,
-                    questionIndex: quizViewModel.currentQuestionIndex,
-                    countOfQuestions: quizViewModel.quizQuestions.count,
-                    mode: .quiz,
-                    showFooterButton: true,
-                    goNext: quizViewModel.goToNextQuestion,
-                    selectedAnswer: $quizViewModel.selectedAnswer
-                )
-                .onChange(of: quizViewModel.quizIsFinished) { isFinished in
-                    if let result = quizViewModel.lastResult, isFinished {
-                        historyViewModel.saveResult(result: result)
+                    .padding(.bottom, 15)
+                if quizViewModel.currentQuestionIndex < quizViewModel.quizQuestions.count {
+                    QuestionSectionView(
+                        questionText: quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex].question,
+                        shuffledAnswers: shuffledAnswers,
+                        questionIndex: quizViewModel.currentQuestionIndex,
+                        countOfQuestions: quizViewModel.quizQuestions.count,
+                        mode: .quiz,
+                        showFooterButton: true,
+                        goNext: quizViewModel.goToNextQuestion,
+                        elapsedTime: elapsedTime,
+                        totalTime: quizDuration,
+                        selectedAnswer: $quizViewModel.selectedAnswer
+                    )
+                    .onChange(of: quizViewModel.quizIsFinished) { isFinished in
+                        if let result = quizViewModel.lastResult, isFinished {
+                            historyViewModel.saveResult(result: result)
+                            stopTimer()
+                        }
                     }
+                    .disabled(isTimeout)
+                    footerText
+                        .padding(.top, 8)
                 }
-                footerText
-                    .padding(.top, 8)
             }
             .padding(20)
             .padding(.top, 10)
             Spacer()
+            if isTimeout {
+                endTimeTopic
+            }
         }
+        .onAppear { startTimer() }
+        .onDisappear { stopTimer() }
+        
     }
 }
 
@@ -71,6 +103,71 @@ private extension QuizView {
             .font(.caption2)
     }
     
+    private var endTimeTopic: some View {
+        ZStack {
+            Color.black.opacity(0.5)
+                .ignoresSafeArea()
+                .transition(.opacity)
+            VStack {
+                Text("Время вышло!")
+                    .foregroundColor(Color.appThemeColors.accent)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding(.bottom, 12)
+                Group {
+                    Text("Вы не успели пройти викторину.")
+                    Text("Попробуйте еще раз!")
+                        .padding(.bottom, 40)
+                }
+                .foregroundColor(Color.appThemeColors.accent)
+                .multilineTextAlignment(.center)
+                Button {
+                    withAnimation {
+                        quizViewModel.restart()
+                        showQuiz = false
+                    }
+                } label: {
+                    RoundedRectangleButton(
+                        text: "НАЧАТЬ ЗАНОВО",
+                        textColor: Color.appThemeColors.white,
+                        backgroundColor: Color.appThemeColors.moodyBlue
+                    )
+                }
+            }
+            .padding(32)
+            .background(
+                RoundedRectangle(cornerRadius: 46)
+                    .fill(Color.appThemeColors.white)
+            )
+            .padding(.horizontal, 13)
+        }
+    }
+    
+}
+
+// MARK: - Timer Methods
+
+private extension QuizView {
+    
+    private func startTimer() {
+        timer?.invalidate()
+        elapsedTime = 0
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            elapsedTime += 1
+            if elapsedTime >= quizDuration {
+                stopTimer()
+                withAnimation {
+                    isTimeout = true
+                }
+            }
+        }
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
 }
 
 // MARK: - Preview
@@ -78,7 +175,7 @@ private extension QuizView {
 #Preview {
     ZStack {
         Color.appThemeColors.moodyBlue.ignoresSafeArea()
-        QuizView()
+        QuizView(showQuiz: .constant(true))
             .environmentObject(DeveloperPreview.shared.quizViewModel)
             .environmentObject(DeveloperPreview.shared.historyViewModel)
     }

@@ -24,4 +24,10 @@ final class DateFormatterHelper {
         return formatter.string(from: date)
     }
     
+    static func formatTime(time: TimeInterval) -> String {
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        return String(format: "%d:%02d", minutes, seconds)
+    }
+    
 }

@@ -81,22 +81,36 @@ extension QuizViewModel {
     
     func goToNextQuestion() {
         saveAnswer()
-        self.selectedAnswer = nil
+        selectedAnswer = nil
         
         if currentQuestionIndex < quizQuestions.count - 1 {
-            quizIsFinished = false
             currentQuestionIndex += 1
         } else {
-            quizIsFinished = true
-            currentQuestionIndex = 0
-            lastResult = QuizResult(id: UUID(), date: Date(), answeredQuestions: answeredQuestions)
-            answeredQuestions = []
+            finishQuiz(shouldSaveResult: true)
         }
     }
     
     func restart() {
         quizIsFinished = false
+        currentQuestionIndex = 0
+        selectedAnswer = nil
+        answeredQuestions = []
+        lastResult = nil
         quizQuestions = []
+    }
+    
+    func finishQuiz(shouldSaveResult: Bool) {
+        quizIsFinished = true
+        
+        if shouldSaveResult {
+            lastResult = QuizResult(id: UUID(), date: Date(), answeredQuestions: answeredQuestions)
+        } else {
+            lastResult = nil
+        }
+
+        currentQuestionIndex = 0
+        answeredQuestions = []
+        selectedAnswer = nil
     }
     
     // Private Methods

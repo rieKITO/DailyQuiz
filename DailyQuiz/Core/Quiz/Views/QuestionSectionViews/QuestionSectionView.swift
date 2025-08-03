@@ -32,6 +32,12 @@ struct QuestionSectionView: View {
     
     let goNext: (() -> Void)?
     
+    // timer
+    
+    let elapsedTime: TimeInterval?
+    
+    let totalTime: TimeInterval?
+    
     // MARK: - Binding
     
     @Binding
@@ -41,6 +47,20 @@ struct QuestionSectionView: View {
     
     var body: some View {
         VStack {
+            if
+                let elapsedTime = elapsedTime,
+                let totalTime = totalTime
+            {
+                HStack {
+                    Text(DateFormatterHelper.formatTime(time: elapsedTime))
+                    Spacer()
+                    Text(DateFormatterHelper.formatTime(time: totalTime))
+                }
+                .font(.subheadline)
+                .foregroundStyle(Color.appThemeColors.deepPurple)
+                CustomLinearProgressView(progress: elapsedTime / totalTime)
+                    .padding(.bottom, 20)
+            }
             HStack {
                 questionNumber
                 if mode != .quiz {
@@ -54,7 +74,7 @@ struct QuestionSectionView: View {
             answers
             if showFooterButton {
                 footerButton
-                    .padding(.top, 67)
+                    .padding(.top, 30)
             }
         }
         .frame(maxWidth: .infinity)
@@ -173,6 +193,8 @@ private extension QuestionSectionView {
                     mode: .quiz,
                     showFooterButton: true,
                     goNext: nil,
+                    elapsedTime: 0,
+                    totalTime: 10,
                     selectedAnswer: $selectedAnswer
                 )
                 .padding()

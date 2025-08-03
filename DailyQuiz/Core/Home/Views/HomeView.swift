@@ -48,7 +48,7 @@ struct HomeView: View {
                 }
             // quiz
             } else if showQuiz && !quizViewModel.quizQuestions.isEmpty && !quizViewModel.quizIsFinished {
-                QuizView()
+                QuizView(showQuiz: $showQuiz)
                     .environmentObject(quizViewModel)
                     .environmentObject(historyViewModel)
             // quiz result
@@ -135,9 +135,12 @@ private extension HomeView {
                 .bold()
                 .multilineTextAlignment(.center)
             Button {
-                showQuiz = true
                 quizViewModel.loadQuizQuestions()
-                showErrorMessage = quizViewModel.quizQuestions.isEmpty ? true : false
+                if !quizViewModel.quizQuestions.isEmpty {
+                    showQuiz = true
+                } else {
+                    showErrorMessage = true
+                }
             } label: {
                 RoundedRectangleButton(
                     text: "НАЧАТЬ ВИКТОРИНУ",
