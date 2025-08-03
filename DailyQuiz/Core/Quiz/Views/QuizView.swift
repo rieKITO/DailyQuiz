@@ -28,6 +28,10 @@ struct QuizView: View {
         quizViewModel.currentQuizQuestionsShuffledAnswers?[quizViewModel.currentQuestionIndex] ?? []
     }
     
+    private var currentQuestion: QuizQuestion {
+        quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex]
+    }
+    
     // MARK: - State
     
     @State
@@ -52,13 +56,14 @@ struct QuizView: View {
                     .padding(.bottom, 15)
                 if quizViewModel.currentQuestionIndex < quizViewModel.quizQuestions.count {
                     QuestionSectionView(
-                        questionText: quizViewModel.quizQuestions[quizViewModel.currentQuestionIndex].question,
+                        questionText: currentQuestion.question,
                         shuffledAnswers: shuffledAnswers,
                         questionIndex: quizViewModel.currentQuestionIndex,
                         countOfQuestions: quizViewModel.quizQuestions.count,
-                        mode: .quiz,
+                        mode: quizViewModel.resultAnswerShown ? .resultSection(correctAnswer: currentQuestion.correctAnswer) : .quiz,
+                        isInteractionDisabled: quizViewModel.resultAnswerShown,
                         showFooterButton: true,
-                        goNext: quizViewModel.goToNextQuestion,
+                        goNext: handleAnswerAndGoNext,
                         elapsedTime: elapsedTime,
                         totalTime: quizDuration,
                         selectedAnswer: $quizViewModel.selectedAnswer
@@ -166,6 +171,17 @@ private extension QuizView {
     private func stopTimer() {
         timer?.invalidate()
         timer = nil
+    }
+    
+}
+
+// MARK: - Answer Highlighting
+
+private extension QuizView {
+    
+    func handleAnswerAndGoNext() {
+        guard quizViewModel.selectedAnswer != nil else { return }
+        quizViewModel.showAnswerResult()
     }
     
 }

@@ -99,6 +99,7 @@ private extension QuizResultView {
             .foregroundStyle(Color.appThemeColors.accent)
             .font(.title)
             .fontWeight(.bold)
+            .multilineTextAlignment(.center)
     }
     
     private var quizResultSubtitle: some View {
@@ -132,6 +133,7 @@ private extension QuizResultView {
                     questionIndex: index,
                     countOfQuestions: quizResult.answeredQuestionsCount,
                     mode: .resultSection(correctAnswer: question.correctAnswer),
+                    isInteractionDisabled: false,
                     showFooterButton: false,
                     goNext: nil,
                     elapsedTime: nil,

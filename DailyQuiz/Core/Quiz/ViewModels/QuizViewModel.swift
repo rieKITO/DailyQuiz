@@ -33,6 +33,9 @@ final class QuizViewModel: ObservableObject {
     @Published
     var lastResult: QuizResult? = nil
     
+    @Published
+    var resultAnswerShown: Bool = false
+    
     // MARK: - Private Properties
     
     private var answeredQuestions: [AnsweredQuestion] = []
@@ -111,6 +114,16 @@ extension QuizViewModel {
         currentQuestionIndex = 0
         answeredQuestions = []
         selectedAnswer = nil
+    }
+    
+    // Answer Highlighting
+    
+    func showAnswerResult() {
+        self.resultAnswerShown = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.resultAnswerShown = false
+            self.goToNextQuestion()
+        }
     }
     
     // Private Methods

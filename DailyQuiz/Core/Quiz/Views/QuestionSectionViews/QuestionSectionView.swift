@@ -26,6 +26,8 @@ struct QuestionSectionView: View {
     
     let mode: questionSectionMode
     
+    let isInteractionDisabled: Bool
+    
     // next button
     
     let showFooterButton: Bool
@@ -123,11 +125,11 @@ private extension QuestionSectionView {
         } label: {
             RoundedRectangleButton(
                 text: questionIndex < countOfQuestions - 1 ? "ДАЛЕЕ" : "ЗАВЕРШИТЬ",
-                textColor: selectedAnswer == nil ? Color.appThemeColors.lightGray : Color.appThemeColors.white,
-                backgroundColor: selectedAnswer == nil ? Color.appThemeColors.gray : Color.appThemeColors.moodyBlue
+                textColor: selectedAnswer == nil || isInteractionDisabled ? Color.appThemeColors.lightGray : Color.appThemeColors.white,
+                backgroundColor: selectedAnswer == nil || isInteractionDisabled ? Color.appThemeColors.gray : Color.appThemeColors.moodyBlue
             )
         }
-        .disabled(selectedAnswer == nil)
+        .disabled(selectedAnswer == nil || isInteractionDisabled)
     }
     
     private var questionStatus: some View {
@@ -191,6 +193,7 @@ private extension QuestionSectionView {
                     questionIndex: 1,
                     countOfQuestions: 5,
                     mode: .quiz,
+                    isInteractionDisabled: false,
                     showFooterButton: true,
                     goNext: nil,
                     elapsedTime: 0,
